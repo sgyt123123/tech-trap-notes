@@ -1,7 +1,9 @@
 
 import React from 'react';
+import { motion } from 'framer-motion';
 import { Node } from '../../types';
 import { Info, AlertTriangle, Zap, Sprout, Skull, Ban, Hammer, Hourglass, Activity } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 interface LogicNodeProps {
   node: Node;
@@ -12,123 +14,163 @@ interface LogicNodeProps {
   setHovered: (id: string | null) => void;
 }
 
+interface NodeStyle {
+  strokeClass: string;
+  fillClass: string;
+  textClass: string;
+}
+
+const NODE_STYLE_BY_TYPE: Record<Node['type'], NodeStyle> = {
+  concept: { strokeClass: 'stroke-cyan-400', fillClass: 'fill-cyan-900/20', textClass: 'text-cyan-400' },
+  cause: { strokeClass: 'stroke-amber-400', fillClass: 'fill-amber-900/20', textClass: 'text-amber-400' },
+  effect: { strokeClass: 'stroke-rose-500', fillClass: 'fill-rose-900/20', textClass: 'text-rose-500' },
+  solution: { strokeClass: 'stroke-emerald-400', fillClass: 'fill-emerald-900/20', textClass: 'text-emerald-400' },
+  trap: { strokeClass: 'stroke-slate-500', fillClass: 'fill-slate-800/50', textClass: 'text-slate-500' },
+};
+
+const getNodeIcon = (node: Node) => {
+  if (node.id === 'ford_paradox') return <Ban size={24} />;
+  if (node.id === 'resistance') return <Hammer size={24} />;
+  if (node.id === 'institution_gap') return <Hourglass size={24} />;
+  if (node.id === 'short_term') return <Activity size={24} />;
+
+  if (node.type === 'cause') return <Zap size={24} />;
+  if (node.type === 'effect') return <AlertTriangle size={24} />;
+  if (node.type === 'solution') return <Sprout size={24} />;
+  if (node.type === 'trap') return <Skull size={24} />;
+  return <Info size={24} />;
+};
+
+const getNodeStyle = (node: Node): NodeStyle => {
+  if (node.id === 'ford_paradox') {
+    return { strokeClass: 'stroke-rose-500', fillClass: 'fill-rose-900/20', textClass: 'text-rose-500' };
+  }
+
+  if (node.id === 'resistance') {
+    return { strokeClass: 'stroke-orange-500', fillClass: 'fill-orange-900/20', textClass: 'text-orange-500' };
+  }
+
+  return NODE_STYLE_BY_TYPE[node.type];
+};
+
 const LogicNode: React.FC<LogicNodeProps> = ({ node, isSelected, isHovered, isRelated, onSelect, setHovered }) => {
-  
-  const getNodeIcon = (node: Node) => {
-    if (node.id === 'ford_paradox') return <Ban size={24} />;
-    if (node.id === 'resistance') return <Hammer size={24} />;
-    if (node.id === 'institution_gap') return <Hourglass size={24} />;
-    if (node.id === 'short_term') return <Activity size={24} />;
-
-    switch (node.type) {
-      case 'cause': return <Zap size={24} />;
-      case 'effect': return <AlertTriangle size={24} />;
-      case 'solution': return <Sprout size={24} />;
-      case 'trap': return <Skull size={24} />;
-      default: return <Info size={24} />;
-    }
-  };
-
-  const getNodeColor = (node: Node) => {
-    if (node.id === 'ford_paradox') return 'stroke-rose-500 fill-rose-900/20 text-rose-500';
-    if (node.id === 'resistance') return 'stroke-orange-500 fill-orange-900/20 text-orange-500';
-
-    switch (node.type) {
-      case 'cause': return 'stroke-amber-400 fill-amber-900/20 text-amber-400';
-      case 'effect': return 'stroke-rose-500 fill-rose-900/20 text-rose-500';
-      case 'solution': return 'stroke-emerald-400 fill-emerald-900/20 text-emerald-400';
-      case 'trap': return 'stroke-slate-500 fill-slate-800/50 text-slate-500';
-      default: return 'stroke-cyan-400 fill-cyan-900/20 text-cyan-400';
-    }
-  };
-
-  const colorClass = getNodeColor(node);
-  const opacity = isRelated ? 1 : 0.2;
+  const nodeStyle = getNodeStyle(node);
+  const nodeIcon = getNodeIcon(node);
   const isDecisionNode = node.id === 'institution_gap';
+  const isActiveNode = isSelected || isHovered;
+  const opacity = isRelated ? 1 : 0.2;
+
+  const handleSelect = () => onSelect(node);
+  const handleKeyDown = (event: React.KeyboardEvent<SVGGElement>) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      handleSelect();
+    }
+  };
 
   return (
-    <g 
-      onClick={() => onSelect(node)}
+    <motion.g
+      onClick={handleSelect}
       onMouseEnter={() => setHovered(node.id)}
       onMouseLeave={() => setHovered(null)}
+      onFocus={() => setHovered(node.id)}
+      onBlur={() => setHovered(null)}
+      onKeyDown={handleKeyDown}
+      tabIndex={0}
+      role="button"
+      focusable
+      aria-label={`查看节点：${node.label}`}
       className="cursor-pointer group transition-opacity duration-500"
-      style={{ opacity }}
+      initial={{ opacity: 0, scale: 0.96 }}
+      animate={{ opacity, scale: isActiveNode ? 1.04 : 1 }}
+      transition={{ duration: 0.25, ease: 'easeOut' }}
     >
-      {/* Halo Effect */}
       {isDecisionNode ? (
-        <rect 
-            x={node.x - (isSelected || isHovered ? 50 : 40)} 
-            y={node.y - (isSelected || isHovered ? 50 : 40)} 
-            width={(isSelected || isHovered ? 100 : 80)}
-            height={(isSelected || isHovered ? 100 : 80)}
-            className={`fill-current transition-all duration-700 ease-in-out ${colorClass.split(' ')[2]}`}
-            style={{ 
-                opacity: isSelected || isHovered ? 0.25 : 0.05,
-                transformBox: 'fill-box', 
-                transformOrigin: 'center',
-                transform: 'rotate(45deg)'
-            }} 
+        <motion.rect
+          x={node.x - (isActiveNode ? 50 : 40)}
+          y={node.y - (isActiveNode ? 50 : 40)}
+          width={isActiveNode ? 100 : 80}
+          height={isActiveNode ? 100 : 80}
+          className={cn('fill-current transition-all duration-700 ease-in-out', nodeStyle.textClass)}
+          style={{
+            opacity: isActiveNode ? 0.25 : 0.05,
+            transformBox: 'fill-box',
+            transformOrigin: 'center',
+            transform: 'rotate(45deg)',
+          }}
         />
       ) : (
-        <circle 
-            cx={node.x} cy={node.y} r={isSelected || isHovered ? 60 : 45}
-            className={`fill-current transition-all duration-700 ease-in-out ${colorClass.split(' ')[2]}`}
-            style={{ 
-                opacity: isSelected || isHovered ? 0.25 : 0.05,
-                transformBox: 'fill-box', 
-                transformOrigin: 'center',
-            }} 
+        <motion.circle
+          cx={node.x}
+          cy={node.y}
+          r={isActiveNode ? 60 : 45}
+          className={cn('fill-current transition-all duration-700 ease-in-out', nodeStyle.textClass)}
+          style={{
+            opacity: isActiveNode ? 0.25 : 0.05,
+            transformBox: 'fill-box',
+            transformOrigin: 'center',
+          }}
         />
       )}
-      
-      {/* Core Node Shape */}
+
       {isDecisionNode ? (
-         <rect
-            x={node.x - 28}
-            y={node.y - 28}
-            width="56"
-            height="56"
-            className={`${colorClass} bg-slate-950 transition-all duration-300 ease-out ${isSelected || isHovered ? 'stroke-[3px]' : 'stroke-[1.5px]'} animate-pulse`}
-            fill="#020617"
-            transform={`rotate(45, ${node.x}, ${node.y})`}
-            filter={isSelected || isHovered ? "url(#glow-node)" : ""}
+        <rect
+          x={node.x - 28}
+          y={node.y - 28}
+          width="56"
+          height="56"
+          className={cn(
+            nodeStyle.strokeClass,
+            nodeStyle.fillClass,
+            'bg-slate-950 transition-all duration-300 ease-out',
+            isActiveNode ? 'stroke-[3px]' : 'stroke-[1.5px]',
+            'animate-pulse'
+          )}
+          fill="#020617"
+          transform={`rotate(45, ${node.x}, ${node.y})`}
+          filter={isActiveNode ? 'url(#glow-node)' : ''}
         />
       ) : (
         <circle
-            cx={node.x}
-            cy={node.y}
-            r="36"
-            className={`${colorClass} bg-slate-950 transition-all duration-300 ease-out ${isSelected || isHovered ? 'stroke-[3px]' : 'stroke-[1.5px]'}`}
-            fill="#020617"
-            filter={isSelected || isHovered ? "url(#glow-node)" : ""}
+          cx={node.x}
+          cy={node.y}
+          r="36"
+          className={cn(
+            nodeStyle.strokeClass,
+            nodeStyle.fillClass,
+            'bg-slate-950 transition-all duration-300 ease-out',
+            isActiveNode ? 'stroke-[3px]' : 'stroke-[1.5px]'
+          )}
+          fill="#020617"
+          filter={isActiveNode ? 'url(#glow-node)' : ''}
         />
       )}
-      
-      {/* Icon */}
-      <foreignObject x={node.x - 12} y={node.y - 12} width="24" height="24" className={`pointer-events-none ${colorClass.split(' ').pop()}`}>
-         <div className="flex items-center justify-center w-full h-full transition-transform duration-300 group-hover:scale-110">
-           {getNodeIcon(node)}
-         </div>
+
+      <foreignObject x={node.x - 12} y={node.y - 12} width="24" height="24" className={cn('pointer-events-none', nodeStyle.textClass)}>
+        <div className="flex items-center justify-center w-full h-full transition-transform duration-300 group-hover:scale-110">
+          {nodeIcon}
+        </div>
       </foreignObject>
 
-      {/* Main Label */}
       <text
         x={node.x}
         y={node.y + 70}
         textAnchor="middle"
-        className={`text-sm font-bold pointer-events-none transition-all duration-300 ${isSelected || isHovered ? 'fill-white' : 'fill-slate-300'}`}
+        className={cn(
+          'text-sm font-bold pointer-events-none transition-all duration-300',
+          isActiveNode ? 'fill-white' : 'fill-slate-300'
+        )}
         style={{
           paintOrder: 'stroke',
           stroke: '#020617',
           strokeWidth: '4px',
           strokeLinecap: 'round',
-          strokeLinejoin: 'round'
+          strokeLinejoin: 'round',
         }}
       >
         {node.label}
       </text>
-      
-      {/* Type Tag */}
+
       <text
         x={node.x}
         y={node.y - 50}
@@ -137,7 +179,7 @@ const LogicNode: React.FC<LogicNodeProps> = ({ node, isSelected, isHovered, isRe
       >
         {node.type}
       </text>
-    </g>
+    </motion.g>
   );
 };
 

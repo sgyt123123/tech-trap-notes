@@ -4,81 +4,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>技术陷阱可视化 - The Technology Trap Visualization</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            colors: {
-              slate: {
-                850: '#151f32',
-                950: '#020617',
-              },
-              cyan: {
-                450: '#00aaff',
-              }
-            },
-            fontFamily: {
-              sans: ['Inter', 'system-ui', 'sans-serif'],
-              serif: ['Georgia', 'Cambria', 'Times New Roman', 'serif'],
-              mono: ['Fira Code', 'monospace'],
-            },
-            animation: {
-              'flow': 'flow 20s linear infinite',
-              'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-            },
-            keyframes: {
-              flow: {
-                '0%': { strokeDashoffset: '1000' },
-                '100%': { strokeDashoffset: '0' },
-              }
-            }
-          },
-        },
-      }
-    </script>
-    <style>
-      body {
-        background-color: #020617;
-        color: #e2e8f0;
-      }
-      /* Custom scrollbar */
-      ::-webkit-scrollbar {
-        width: 6px;
-        height: 6px;
-      }
-      ::-webkit-scrollbar-track {
-        background: #0f172a; 
-      }
-      ::-webkit-scrollbar-thumb {
-        background: #334155; 
-        border-radius: 3px;
-      }
-      ::-webkit-scrollbar-thumb:hover {
-        background: #475569; 
-      }
-      
-      .glass-panel {
-        background: rgba(15, 23, 42, 0.6);
-        backdrop-filter: blur(12px);
-        border: 1px solid rgba(255, 255, 255, 0.05);
-      }
-    </style>
-  <script type="importmap">
-{
-  "imports": {
-    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
-    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.30.0",
-    "react/": "https://aistudiocdn.com/react@^19.2.0/",
-    "react": "https://aistudiocdn.com/react@^19.2.0",
-    "recharts": "https://aistudiocdn.com/recharts@^3.4.1",
-    "react-markdown": "https://aistudiocdn.com/react-markdown@^10.1.0",
-    "lucide-react": "https://aistudiocdn.com/lucide-react@^0.554.0"
-  }
-}
-</script>
-</head>
+  </head>
   <body>
     <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
   </body>
 </html>

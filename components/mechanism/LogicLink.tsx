@@ -105,7 +105,7 @@ const LogicLink: React.FC<LogicLinkProps> = ({ link, source, target, isConnected
             height="28"
             style={{ overflow: 'visible' }}
            >
-             <div className="flex items-center justify-center w-full h-full transform transition-transform duration-300 hover:scale-110 cursor-pointer">
+             <div className="flex items-center justify-center w-full h-full transform transition-transform duration-300 hover:scale-110 cursor-default">
                 <span className={`text-[10px] font-black uppercase tracking-widest text-center py-1.5 px-3 rounded-full border shadow-[0_0_15px_rgba(0,0,0,0.5)] z-20 whitespace-nowrap backdrop-blur-md transition-all duration-300
                     ${isProsperityPath 
                         ? 'bg-emerald-950/90 border-emerald-500/50 text-emerald-400 group-hover/link:bg-emerald-900 group-hover/link:border-emerald-400' 

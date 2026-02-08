@@ -2,7 +2,7 @@ import React from 'react';
 import { Zap, GraduationCap, ShieldCheck, TrendingUp } from 'lucide-react';
 
 const ProsperityVisual: React.FC = () => (
-    <div className="bg-slate-900/50 rounded-xl p-5 border border-slate-800 mb-6 relative overflow-hidden min-h-[200px] flex flex-col">
+    <div className="bg-slate-900/50 rounded-xl p-5 border border-slate-800 mb-6 relative overflow-visible min-h-[200px] flex flex-col">
        <div className="flex justify-between items-center text-xs font-bold text-slate-500 uppercase tracking-widest mb-4 relative z-10">
         <span>The Great Coupling (大融合)</span>
       </div>
@@ -12,9 +12,9 @@ const ProsperityVisual: React.FC = () => (
            style={{ backgroundImage: 'linear-gradient(#cbd5e1 1px, transparent 1px), linear-gradient(90deg, #cbd5e1 1px, transparent 1px)', backgroundSize: '20px 20px' }}>
       </div>
 
-      <div className="flex-1 flex items-center justify-center gap-6 relative z-10">
+      <div className="flex-1 flex items-center justify-center relative z-10 px-2 md:px-4">
           {/* Mechanism */}
-          <div className="relative w-48 h-32">
+          <div className="relative w-full max-w-[320px] h-[180px]">
               {/* Connecting Belt/Chain */}
               <svg className="absolute inset-0 w-full h-full overflow-visible">
                   <defs>
@@ -31,7 +31,7 @@ const ProsperityVisual: React.FC = () => (
               </svg>
 
               {/* Gear 1: Tech (Driver) */}
-              <div className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 w-20 h-20">
+              <div className="absolute left-0 top-1/2 -translate-y-1/2 w-20 h-20">
                    <div className="w-full h-full rounded-full border-[6px] border-dashed border-cyan-500 bg-slate-950 flex items-center justify-center shadow-[0_0_20px_rgba(6,182,212,0.3)] animate-[spin_4s_linear_infinite]">
                         <Zap size={24} className="text-cyan-400" />
                    </div>
@@ -41,21 +41,21 @@ const ProsperityVisual: React.FC = () => (
               </div>
 
               {/* Gear 2: Education (Follower Top) */}
-              <div className="absolute right-0 top-0 w-14 h-14">
+              <div className="absolute right-0 top-1 w-14 h-14">
                    <div className="w-full h-full rounded-full border-[4px] border-dashed border-emerald-500 bg-slate-950 flex items-center justify-center shadow-[0_0_15px_rgba(16,185,129,0.2)] animate-[spin_4s_linear_infinite_reverse]">
                         <GraduationCap size={16} className="text-emerald-400" />
                    </div>
-                   <div className="absolute -right-12 top-1/2 -translate-y-1/2 text-[9px] font-bold text-emerald-500 bg-slate-950 px-1.5 rounded border border-emerald-900">
+                   <div className="absolute left-1/2 top-full mt-1 -translate-x-1/2 text-[9px] font-bold text-emerald-500 bg-slate-950 px-1.5 rounded border border-emerald-900 whitespace-nowrap">
                        技能适配
                    </div>
               </div>
 
               {/* Gear 3: Welfare (Follower Bottom) */}
-              <div className="absolute right-0 bottom-0 w-14 h-14">
+              <div className="absolute right-0 bottom-1 w-14 h-14">
                    <div className="w-full h-full rounded-full border-[4px] border-dashed border-purple-500 bg-slate-950 flex items-center justify-center shadow-[0_0_15px_rgba(168,85,247,0.2)] animate-[spin_4s_linear_infinite_reverse]">
                         <ShieldCheck size={16} className="text-purple-400" />
                    </div>
-                   <div className="absolute -right-12 top-1/2 -translate-y-1/2 text-[9px] font-bold text-purple-500 bg-slate-950 px-1.5 rounded border border-purple-900">
+                   <div className="absolute left-1/2 top-full mt-1 -translate-x-1/2 text-[9px] font-bold text-purple-500 bg-slate-950 px-1.5 rounded border border-purple-900 whitespace-nowrap">
                        利益分配
                    </div>
               </div>

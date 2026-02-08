@@ -1,8 +1,14 @@
 import React from 'react';
+import { motion, useReducedMotion } from 'framer-motion';
 import { COGNITIVE_PIPELINE_DATA } from '../../constants';
 import { TrendingUp, Clock, Zap, BrainCircuit, UserCircle, ArrowRightLeft } from 'lucide-react';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { createFadeInMotion } from '@/lib/motion';
 
 const TimelineCurve: React.FC = () => {
+    const shouldReduceMotion = useReducedMotion();
+    const contentMotion = createFadeInMotion(shouldReduceMotion);
+
     return (
         <div className="flex-1 bg-slate-950 border border-slate-800 rounded-xl p-0 overflow-hidden flex flex-col animate-in fade-in slide-in-from-bottom-4 duration-500">
              
@@ -31,10 +37,16 @@ const TimelineCurve: React.FC = () => {
              </div>
              
              {/* Dual Track Timeline */}
-             <div className="flex-1 overflow-y-auto custom-scrollbar pt-16 pb-12 px-6">
+             <ScrollArea className="flex-1">
+             <motion.div
+                className="pt-16 pb-12 px-6"
+                initial={contentMotion.initial}
+                animate={contentMotion.animate}
+                transition={contentMotion.transition}
+             >
                 <div className="max-w-6xl mx-auto space-y-12">
                     {/* Timeline Grid */}
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8 min-w-[600px]">
+                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                         
                         {/* Stage 1: The Spark */}
                         <div className="flex flex-col gap-4 relative group">
@@ -248,7 +260,8 @@ const TimelineCurve: React.FC = () => {
                         </div>
                     </div>
                 </div>
-             </div>
+             </motion.div>
+             </ScrollArea>
         </div>
     );
 };

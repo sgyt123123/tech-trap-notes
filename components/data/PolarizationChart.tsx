@@ -40,12 +40,18 @@ const PolarizationChart: React.FC<PolarizationChartProps> = ({ activeTab }) => {
         </h4>
         
         {activeTab === 'modern' ? (
-        <div className="w-full h-[200px] relative min-w-0" style={{ width: '100%', height: '200px' }}>
+        <div className="w-full h-[220px] sm:h-[240px] relative min-w-0">
             {isChartReady && (
                 <ResponsiveContainer width="100%" height="100%" minWidth={0}>
-                <BarChart data={POLARIZATION_DATA} layout="vertical" margin={{left: 40}}>
+                <BarChart data={POLARIZATION_DATA} layout="vertical" margin={{ left: 12, right: 12 }}>
                     <XAxis type="number" hide />
-                    <YAxis dataKey="skill" type="category" width={100} tick={{fontSize: 10, fill: '#94a3b8'}} />
+                    <YAxis
+                        dataKey="skill"
+                        type="category"
+                        width={88}
+                        tick={{ fontSize: 10, fill: '#94a3b8' }}
+                        tickFormatter={(value) => value.replace(/\s*\(.+\)/, '')}
+                    />
                     <Tooltip 
                         cursor={{fill: 'transparent'}}
                         content={({payload}) => {

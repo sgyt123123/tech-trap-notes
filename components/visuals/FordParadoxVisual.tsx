@@ -10,7 +10,7 @@ const FordParadoxVisual: React.FC = () => (
          </div>
          
          {/* EXPANDED HEIGHT & WIDTH: 360x500 for maximum breathing room */}
-         <div className="w-full h-[500px] relative z-10 bg-slate-950/50 rounded-xl border border-red-500/10 overflow-visible">
+         <div className="w-full h-[420px] md:h-[500px] relative z-10 bg-slate-950/50 rounded-xl border border-red-500/10 overflow-visible">
           {/* Background Grid */}
           <div className="absolute inset-0 opacity-20 pointer-events-none" 
                style={{ backgroundImage: 'radial-gradient(#ef4444 1px, transparent 1px)', backgroundSize: '20px 20px' }}>

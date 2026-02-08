@@ -48,7 +48,7 @@ const ProductivityChart: React.FC<ProductivityChartProps> = ({ activeTab }) => {
         </div>
         
         {/* Main Chart Area with explicit height */}
-        <div className="w-full h-[400px] relative min-w-0" style={{ width: '100%', height: '400px' }}>
+        <div className="w-full h-[320px] sm:h-[380px] lg:h-[420px] relative min-w-0">
             <div className="absolute top-4 left-4 z-0 pointer-events-none">
                  <h3 className={`text-4xl font-serif font-black opacity-10 ${activeTab === 'historical' ? 'text-cyan-400' : 'text-pink-400'}`}>
                     {activeTab === 'historical' ? 'THE PAUSE' : 'THE DIVERGENCE'}
