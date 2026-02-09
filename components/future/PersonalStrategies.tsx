@@ -2,7 +2,6 @@ import React from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { PERSONAL_STRATEGIES } from '../../constants';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { ScrollArea } from '@/components/ui/scroll-area';
 import { createFadeInMotion, createFadeSlideMotion } from '@/lib/motion';
 
 const PersonalStrategies: React.FC = () => {
@@ -11,15 +10,14 @@ const PersonalStrategies: React.FC = () => {
   const strategyMotion = createFadeSlideMotion(shouldReduceMotion, 10, 0.22);
 
   return (
-    <Card className="flex-1 bg-slate-900/50 border border-slate-800 rounded-xl overflow-hidden relative shadow-none animate-in fade-in slide-in-from-bottom-4 duration-500">
+    <Card className="bg-slate-900/50 border border-slate-800 rounded-xl overflow-hidden relative shadow-none animate-in fade-in slide-in-from-bottom-4 duration-500">
       <CardHeader className="px-4 lg:px-8 pt-6 lg:pt-8 pb-2 text-center shrink-0">
         <CardTitle className="text-2xl lg:text-3xl font-serif font-black text-white mb-2">个体进化策略：与 AI 共舞</CardTitle>
         <p className="text-slate-400 text-sm">在算法洪流中，建立不可替代的人类护城河</p>
       </CardHeader>
-      <CardContent className="px-4 lg:px-8 pb-6 lg:pb-8 pt-0 flex-1 min-h-0">
-        <ScrollArea className="h-full pr-2">
+      <CardContent className="px-4 lg:px-8 pb-6 lg:pb-8 pt-0">
           <motion.div
-            className="max-w-4xl mx-auto flex flex-col py-6"
+            className="max-w-4xl mx-auto flex flex-col py-6 pr-2"
             initial={sectionMotion.initial}
             animate={sectionMotion.animate}
             transition={sectionMotion.transition}
@@ -72,7 +70,6 @@ const PersonalStrategies: React.FC = () => {
               })}
             </div>
           </motion.div>
-        </ScrollArea>
       </CardContent>
     </Card>
   );

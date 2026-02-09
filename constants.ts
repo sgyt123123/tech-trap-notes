@@ -116,7 +116,7 @@ export const TRAP_LOGIC_MAP: ChartData = {
       id: 'resistance', 
       label: '社会反抗', 
       type: 'effect', 
-      x: 180, y: 720, // Left Cluster
+      x: 140, y: 720, // Left Cluster
       description: "不要嘲笑卢德分子 (Luddites)。他们不是反科技的疯子，而是理性的经济行动者。",
       detailedMarkdown: `
 ### 社会反抗 (Social Resistance)
@@ -163,7 +163,7 @@ export const TRAP_LOGIC_MAP: ChartData = {
       id: 'prosperity', 
       label: '包容性繁荣', 
       type: 'solution', 
-      x: 750, y: 720, // Right Cluster
+      x: 760, y: 720, // Right Cluster
       description: "最好的结果：技术创造新工作，制度确保红利共享。",
       detailedMarkdown: `
 ### 长期繁荣 (Shared Prosperity)

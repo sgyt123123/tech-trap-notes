@@ -44,17 +44,17 @@ const StoryTimeline: React.FC = () => {
       className="absolute left-3 right-3 bottom-3 lg:left-4 lg:right-4 lg:bottom-4 z-40"
       aria-label="故事模式进度条"
     >
-      <div className="rounded-xl border border-slate-700/70 bg-slate-950/90 backdrop-blur-md px-3 py-2 lg:px-4 lg:py-3 shadow-2xl">
+      <div className="rounded-xl border border-slate-400/55 bg-slate-900/88 backdrop-blur-md px-3 py-2 lg:px-4 lg:py-3 shadow-2xl">
         <div className="flex items-center justify-between gap-3">
           <div className="min-w-0">
-            <p className="text-[10px] uppercase tracking-widest text-cyan-400 font-black flex items-center gap-1.5">
+            <p className="text-[10px] uppercase tracking-widest text-cyan-300 font-black flex items-center gap-1.5">
               {isGuided ? <BookOpen size={11} /> : <Compass size={11} />}
               {isGuided ? `故事导读 · ${story.stepIndex + 1}/${STORY_STEPS.length}` : '自由探索模式'}
             </p>
-            <p className="text-xs lg:text-sm text-slate-200 font-semibold mt-0.5 truncate">
+            <p className="text-sm text-slate-100 font-semibold mt-0.5 truncate">
               {isGuided ? currentStep.title : '你可以任意点击节点，或回到分步导读'}
             </p>
-            <p className="text-[11px] text-slate-400 mt-0.5 hidden sm:block truncate">
+            <p className="text-xs text-slate-200/90 mt-0.5 hidden sm:block truncate">
               {isGuided ? currentStep.description : '提示：点击任意节点后，右侧会展示图解/解析/关联'}
             </p>
           </div>
@@ -68,7 +68,7 @@ const StoryTimeline: React.FC = () => {
                   variant="outline"
                   onClick={prevStep}
                   disabled={story.stepIndex === 0}
-                  className="border-slate-700 bg-slate-900 text-slate-300 hover:bg-slate-800 hover:text-white"
+                  className="border-slate-500/70 bg-slate-900 text-slate-100 hover:bg-slate-800 hover:text-white"
                 >
                   <ChevronLeft size={14} />
                 </Button>

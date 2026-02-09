@@ -31,8 +31,8 @@ interface CreateFlowEdgesOptions {
   highlightedEdgeKeys: Set<string>;
 }
 
-const NODE_WIDTH = 228;
-const NODE_HEIGHT = 108;
+const NODE_WIDTH = 268;
+const NODE_HEIGHT = 124;
 const Y_OFFSET = 72;
 
 type NodeHandlePair = {

@@ -2,7 +2,6 @@ import React from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { COGNITIVE_PIPELINE_DATA } from '../../constants';
 import { TrendingUp, Clock, Zap, BrainCircuit, UserCircle, ArrowRightLeft } from 'lucide-react';
-import { ScrollArea } from '@/components/ui/scroll-area';
 import { createFadeInMotion } from '@/lib/motion';
 
 const TimelineCurve: React.FC = () => {
@@ -10,7 +9,7 @@ const TimelineCurve: React.FC = () => {
     const contentMotion = createFadeInMotion(shouldReduceMotion);
 
     return (
-        <div className="flex-1 bg-slate-950 border border-slate-800 rounded-xl p-0 overflow-hidden flex flex-col animate-in fade-in slide-in-from-bottom-4 duration-500">
+        <div className="bg-slate-950 border border-slate-800 rounded-xl p-0 overflow-hidden flex flex-col animate-in fade-in slide-in-from-bottom-4 duration-500">
              
              {/* Header */}
              <div className="p-6 border-b border-slate-800 bg-slate-900/30 flex justify-between items-center flex-wrap gap-4 shrink-0">
@@ -37,7 +36,6 @@ const TimelineCurve: React.FC = () => {
              </div>
              
              {/* Dual Track Timeline */}
-             <ScrollArea className="flex-1">
              <motion.div
                 className="pt-16 pb-12 px-6"
                 initial={contentMotion.initial}
@@ -261,7 +259,6 @@ const TimelineCurve: React.FC = () => {
                     </div>
                 </div>
              </motion.div>
-             </ScrollArea>
         </div>
     );
 };

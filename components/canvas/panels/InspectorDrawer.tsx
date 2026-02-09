@@ -39,7 +39,7 @@ const InspectorDrawer: React.FC = () => {
             variant="outline"
             size="sm"
             onClick={() => openInspector('visual')}
-            className="bg-slate-900/80 backdrop-blur-md border-slate-500/60 text-slate-100 hover:bg-slate-800 hover:text-white shadow-xl rounded-xl h-10 px-4"
+            className="bg-slate-900/88 backdrop-blur-md border-slate-300/55 text-slate-100 hover:bg-slate-800 hover:text-white shadow-xl rounded-xl h-10 px-4"
           >
             <PanelRightOpen size={16} className="mr-2 text-cyan-300" />
             查看详情
@@ -60,13 +60,13 @@ const InspectorDrawer: React.FC = () => {
               variant="outline"
               size="icon"
               onClick={closeInspector}
-              className="absolute left-0 top-4 -translate-x-[56%] z-50 size-10 bg-slate-900/90 text-slate-100 hover:text-white hover:bg-slate-800 border border-slate-500/70 rounded-xl shadow-xl"
+              className="absolute left-0 top-4 -translate-x-[56%] z-50 size-10 bg-slate-900/92 text-slate-100 hover:text-white hover:bg-slate-800 border border-slate-300/65 rounded-xl shadow-xl"
               aria-label="收起详情面板"
             >
               <PanelRightClose size={16} />
             </Button>
 
-            <div className="h-full min-h-0 rounded-3xl overflow-hidden border border-slate-300/20 shadow-[0_28px_64px_-16px_rgba(2,6,23,0.75)] bg-slate-900/80 backdrop-blur-2xl">
+            <div className="h-full min-h-0 rounded-3xl overflow-hidden border border-slate-200/25 shadow-[0_28px_64px_-16px_rgba(2,6,23,0.75)] bg-slate-900/82 backdrop-blur-2xl">
               <InfoPanel
                 selectedNode={selectedNode}
                 onNavigate={(nodeId) => selectNode(nodeId, 'panel')}

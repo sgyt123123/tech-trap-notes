@@ -104,7 +104,7 @@ const TrapFlowCanvas: React.FC<TrapFlowCanvasProps> = ({ className }) => {
   return (
     <div
       className={cn(
-        'h-full min-h-0 w-full rounded-2xl border border-slate-600/80 overflow-hidden bg-gradient-to-br from-[#10345a] via-[#0c2a4b] to-[#071d37]',
+        'h-full min-h-0 w-full rounded-2xl border border-slate-300/35 overflow-hidden bg-gradient-to-br from-[#1a4a74] via-[#123a62] to-[#0c2b4b]',
         className,
       )}
     >
@@ -143,10 +143,10 @@ const TrapFlowCanvas: React.FC<TrapFlowCanvasProps> = ({ className }) => {
       >
         <Background
           variant={BackgroundVariant.Dots}
-          color="#cbd5e1"
+          color="#dbeafe"
           gap={26}
           size={1.15}
-          className="opacity-[0.26]"
+          className="opacity-[0.34]"
         />
       </ReactFlow>
     </div>

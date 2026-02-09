@@ -2,19 +2,19 @@ import React from 'react';
 import { AlertTriangle, Zap, Clock } from 'lucide-react';
 
 const InstitutionGapVisual: React.FC = () => (
-  <div className="bg-slate-900/50 rounded-xl p-4 lg:p-5 border border-slate-800 mb-4 group relative overflow-visible">
-    <div className="flex justify-between items-center text-xs font-bold text-slate-500 uppercase tracking-widest mb-6">
+  <div className="bg-slate-900/70 rounded-xl p-4 lg:p-5 border border-slate-600/80 mb-4 group relative overflow-visible">
+    <div className="flex justify-between items-center text-xs font-bold text-slate-200 uppercase tracking-widest mb-6">
       <span>Velocity Mismatch</span>
     </div>
     
-    <div className="relative flex flex-col gap-8 py-1 min-h-[170px] md:min-h-[190px] lg:min-h-[210px]">
+    <div className="relative flex flex-col gap-9 py-2 min-h-[210px] md:min-h-[240px] lg:min-h-[270px]">
         {/* Tech Row */}
         <div className="relative z-10">
-            <div className="flex justify-between text-[10px] text-cyan-400 mb-2 font-bold">
-                <span className="flex items-center gap-1.5"><Zap size={12} /> 技术迭代 (Tech)</span>
+            <div className="flex justify-between text-[11px] text-cyan-300 mb-2 font-bold">
+                <span className="flex items-center gap-1.5"><Zap size={13} /> 技术迭代 (Tech)</span>
                 <span className="font-mono opacity-70">Exponential</span>
             </div>
-            <div className="h-2 w-full bg-slate-800 rounded-full overflow-hidden relative">
+            <div className="h-2.5 w-full bg-slate-800 rounded-full overflow-hidden relative">
                 <div className="absolute inset-0 bg-gradient-to-r from-cyan-900 via-cyan-400 to-cyan-900 w-[100%]"></div>
             </div>
         </div>
@@ -32,8 +32,8 @@ const InstitutionGapVisual: React.FC = () => (
                      <div className="absolute right-0 w-1 h-1 bg-red-500 rounded-full translate-x-1/2"></div>
                      
                      {/* Label avoiding overlap */}
-                     <div className="bg-slate-950 px-3 py-1 rounded-full border border-red-500/30 text-red-400 text-[10px] font-bold shadow-sm z-10 flex items-center gap-1">
-                        <AlertTriangle size={10} />
+                     <div className="bg-slate-950 px-3 py-1 rounded-full border border-red-400/40 text-red-300 text-[11px] font-bold shadow-sm z-10 flex items-center gap-1">
+                        <AlertTriangle size={11} />
                         Δ GAP: 焦虑与动荡
                      </div>
                  </div>
@@ -42,11 +42,11 @@ const InstitutionGapVisual: React.FC = () => (
 
         {/* Institution Row */}
         <div className="relative z-10">
-            <div className="flex justify-between text-[10px] text-amber-400 mb-2 font-bold">
-                <span className="flex items-center gap-1.5"><Clock size={12} /> 制度演变 (Institution)</span>
+            <div className="flex justify-between text-[11px] text-amber-300 mb-2 font-bold">
+                <span className="flex items-center gap-1.5"><Clock size={13} /> 制度演变 (Institution)</span>
                 <span className="font-mono opacity-70">Linear</span>
             </div>
-            <div className="h-2 w-full bg-slate-800 rounded-full overflow-hidden">
+            <div className="h-2.5 w-full bg-slate-800 rounded-full overflow-hidden">
                 <div className="w-[20%] h-full bg-amber-500 shadow-[0_0_10px_rgba(245,158,11,0.5)]"></div>
             </div>
         </div>

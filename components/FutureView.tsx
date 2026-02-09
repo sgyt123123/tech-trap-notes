@@ -42,7 +42,7 @@ const FutureView: React.FC = () => {
   return (
     <div className="flex-1 p-4 lg:p-10 relative z-10 animate-in fade-in duration-700 min-h-0">
       <ScrollArea className="h-full w-full">
-        <div className="max-w-6xl mx-auto flex flex-col min-h-full pr-2">
+        <div className="max-w-6xl mx-auto pr-2 pb-8">
             <div className="mb-8 lg:mb-12 text-center shrink-0">
                     <h2 className="text-3xl lg:text-4xl font-serif font-black text-white mb-4">未来岔路口</h2>
                     <p className="text-slate-400 max-w-3xl mx-auto text-base lg:text-lg font-light">
@@ -50,7 +50,7 @@ const FutureView: React.FC = () => {
                     </p>
             </div>
             
-            <Tabs value={activeTab} onValueChange={handleActiveTabChange} className="h-full flex flex-col gap-6">
+            <Tabs value={activeTab} onValueChange={handleActiveTabChange} className="flex flex-col gap-6">
               <div className="flex justify-center shrink-0">
                 <TabsList className="bg-slate-900 p-1 rounded-lg border border-slate-800 inline-flex flex-wrap justify-center gap-1 h-auto">
                   {FUTURE_TAB_OPTIONS.map((tab) => {
@@ -71,7 +71,7 @@ const FutureView: React.FC = () => {
               <AnimatePresence mode="wait">
                 <motion.div
                   key={activeTab}
-                  className="flex-1 min-h-0 flex flex-col"
+                  className="flex flex-col"
                   initial={contentMotion.initial}
                   animate={contentMotion.animate}
                   exit={contentMotion.exit}

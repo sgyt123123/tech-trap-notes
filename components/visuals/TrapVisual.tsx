@@ -2,21 +2,21 @@ import React from 'react';
 import { Repeat } from 'lucide-react';
 
 const TrapVisual: React.FC = () => (
-    <div className="bg-slate-900/50 rounded-xl p-4 lg:p-5 border border-slate-800 mb-4 w-full overflow-visible">
-      <div className="flex justify-between items-center text-xs font-bold text-slate-500 uppercase tracking-widest mb-5">
+    <div className="bg-slate-900/70 rounded-xl p-4 lg:p-5 border border-slate-600/80 mb-4 w-full overflow-visible">
+      <div className="flex justify-between items-center text-xs font-bold text-slate-200 uppercase tracking-widest mb-5">
         <span>System Failure: The Stagnation Cycle</span>
       </div>
 
       {/* Ancient Trap: The Triangle of Stagnation */}
       <div className="relative">
          <div className="flex items-center justify-between mb-4 px-2">
-            <h4 className="text-amber-500 font-bold text-sm flex items-center gap-2">
+            <h4 className="text-amber-300 font-bold text-base flex items-center gap-2">
                 <Repeat size={16} /> 罗马式停滞 (Stagnation Trap)
             </h4>
          </div>
          
-         <div className="w-full min-h-[180px] aspect-[18/13] max-h-[240px] lg:max-h-[260px] relative bg-amber-950/10 rounded-xl border border-amber-900/20 px-2 py-1">
-            <svg className="w-full h-full overflow-visible" viewBox="0 0 360 260" preserveAspectRatio="xMidYMid meet">
+         <div className="w-full min-h-[250px] aspect-[18/13] max-h-[320px] lg:max-h-[360px] relative bg-amber-950/10 rounded-xl border border-amber-900/20 px-2 py-1">
+            <svg className="w-full h-full overflow-visible" viewBox="-10 -8 380 280" preserveAspectRatio="xMidYMid meet">
                 <defs>
                     <marker id="arrow-amber" markerWidth="6" markerHeight="4" refX="5" refY="2" orient="auto">
                         <polygon points="0 0, 6 2, 0 4" fill="#d97706" />

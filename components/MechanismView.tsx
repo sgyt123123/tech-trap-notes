@@ -28,9 +28,9 @@ const ViewInfoPanel: React.FC = () => {
     <div className="absolute top-6 left-6 z-20 max-w-md pointer-events-none">
       <motion.div 
         layout
-        className="pointer-events-auto bg-slate-900/70 backdrop-blur-md border border-slate-400/30 rounded-2xl overflow-hidden shadow-xl"
+        className="pointer-events-auto bg-slate-900/78 backdrop-blur-md border border-slate-300/35 rounded-2xl overflow-hidden shadow-xl"
       >
-        <div className="p-4 flex items-center justify-between gap-4 border-b border-slate-400/20 bg-slate-800/60">
+        <div className="p-4 flex items-center justify-between gap-4 border-b border-slate-300/20 bg-slate-800/75">
           <div className="flex items-center gap-2.5">
             <div className="p-1.5 bg-cyan-400/20 rounded-lg">
               <Info size={16} className="text-cyan-200" />
@@ -40,7 +40,7 @@ const ViewInfoPanel: React.FC = () => {
           <Button 
             variant="ghost" 
             size="icon" 
-            className="h-7 w-7 text-slate-400 hover:text-white hover:bg-white/5"
+            className="h-7 w-7 text-slate-200 hover:text-white hover:bg-white/10"
             onClick={() => setIsExpanded(!isExpanded)}
           >
             {isExpanded ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
@@ -59,7 +59,7 @@ const ViewInfoPanel: React.FC = () => {
                 <h3 className="text-xl font-serif font-bold text-white mb-2 leading-tight">
                   技术进步的双刃剑
                 </h3>
-                <p className="text-slate-200/90 text-sm leading-relaxed font-light">
+                <p className="text-slate-100 text-sm leading-relaxed">
                   直接点击节点开始探索。右侧会同步展示图解、解析与关联内容，减少打断感，保持学习流畅。
                 </p>
               </div>

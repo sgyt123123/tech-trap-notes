@@ -3,7 +3,6 @@ import { motion, useReducedMotion } from 'framer-motion';
 import { FUTURE_SCENARIOS } from '../../constants';
 import { History, CheckCircle, XCircle, AlertTriangle } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { ScrollArea } from '@/components/ui/scroll-area';
 import { createFadeInMotion, createFadeSlideMotion } from '@/lib/motion';
 
 const ScenarioList: React.FC = () => {
@@ -13,7 +12,7 @@ const ScenarioList: React.FC = () => {
 
     return (
         <motion.div
-            className="grid grid-cols-1 lg:grid-cols-3 gap-6 flex-1 min-h-0 pb-6"
+            className="grid grid-cols-1 lg:grid-cols-3 gap-6 pb-6"
             initial={listMotion.initial}
             animate={listMotion.animate}
             transition={listMotion.transition}
@@ -31,7 +30,7 @@ const ScenarioList: React.FC = () => {
                                 : { ...cardMotion.transition, delay: index * 0.04 }
                         }
                     >
-                    <Card className="bg-slate-900/50 border-slate-800 hover:border-slate-700 transition-all group flex flex-col relative overflow-hidden min-h-[400px] lg:min-h-[450px] shadow-none">
+                    <Card className="bg-slate-900/50 border-slate-800 hover:border-slate-700 transition-all group flex flex-col relative overflow-hidden shadow-none h-full">
                         <div className={`absolute top-0 left-0 w-full h-1 ${scenario.id === 'nordic' ? 'bg-green-500' : scenario.id === 'us' ? 'bg-cyan-500' : 'bg-yellow-500'}`}></div>
                         
                         <CardHeader className="px-6 pt-6 pb-4 flex flex-row items-start gap-3 shrink-0">
@@ -41,8 +40,7 @@ const ScenarioList: React.FC = () => {
                             <CardTitle className={`font-bold text-lg leading-tight ${scenario.color}`}>{scenario.name}</CardTitle>
                         </CardHeader>
 
-                        <CardContent className="px-6 pt-0 pb-6 flex-1 min-h-0">
-                        <ScrollArea className="h-[clamp(260px,38vh,360px)] pr-2">
+                        <CardContent className="px-6 pt-0 pb-6">
                         <div className="space-y-8">
                             <div>
                                 <h4 className="text-[10px] uppercase tracking-widest text-slate-500 font-bold mb-3">核心机制</h4>
@@ -84,7 +82,6 @@ const ScenarioList: React.FC = () => {
                                 <p className="text-xs text-slate-400 leading-relaxed">{scenario.risk}</p>
                             </div>
                         </div>
-                        </ScrollArea>
                         </CardContent>
                     </Card>
                     </motion.div>

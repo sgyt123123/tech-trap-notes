@@ -31,9 +31,9 @@ const CanvasShell: React.FC<CanvasShellProps> = ({
 
   return (
     <ReactFlowProvider>
-      <div className="h-full min-h-0 w-full relative overflow-hidden bg-[#071a35]">
+      <div className="h-full min-h-0 w-full relative overflow-hidden bg-[#0b2747]">
         <div
-          className="h-full min-h-0 w-full transition-[padding-right] duration-500 ease-[cubic-bezier(0.23,1,0.32,1)]"
+          className="h-full min-h-0 w-full relative transition-[padding-right] duration-500 ease-[cubic-bezier(0.23,1,0.32,1)]"
           style={{
             paddingRight: isInspectorOpen ? 'calc(clamp(340px, 34vw, 620px) + 1rem)' : '0px',
           }}

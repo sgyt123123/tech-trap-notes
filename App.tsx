@@ -66,8 +66,8 @@ const AppNavItem: React.FC<AppNavItemProps> = ({ isActive, item }) => {
             variant="ghost"
             className={cn(
               'relative h-10 lg:h-11 px-2.5 lg:px-3.5 rounded-xl transition-all duration-300 inline-flex items-center justify-center gap-1.5 min-w-[66px] lg:min-w-[86px] border border-transparent',
-              'text-slate-500 hover:text-slate-300 hover:bg-slate-900/50',
-              isActive && 'bg-gradient-to-b from-slate-800 to-slate-900 text-white shadow-lg border-slate-700 ring-1 ring-cyan-500/20'
+              'text-slate-300 hover:text-white hover:bg-slate-900/60',
+              isActive && 'bg-gradient-to-b from-slate-700 to-slate-900 text-white shadow-lg border-slate-500/70 ring-1 ring-cyan-400/30'
             )}
           >
             <Icon size={15} className={cn('opacity-70 shrink-0', isActive && 'text-cyan-400 opacity-100')} />
@@ -142,16 +142,16 @@ const App: React.FC = () => {
     <Tabs
       value={viewMode}
       onValueChange={handleViewModeChange}
-      className="h-screen w-screen flex flex-col bg-[#020617] text-slate-200 font-sans overflow-hidden selection:bg-cyan-500/30"
+      className="h-screen w-screen flex flex-col bg-[#05162b] text-slate-100 font-sans overflow-hidden selection:bg-cyan-400/35"
     >
-      <header className="h-16 lg:h-[72px] border-b border-white/5 bg-[#020617]/80 backdrop-blur-xl sticky top-0 z-50 flex items-center justify-between px-3 lg:px-8 shrink-0 gap-3">
+      <header className="h-16 lg:h-[72px] border-b border-slate-300/10 bg-[#071427]/88 backdrop-blur-xl sticky top-0 z-50 flex items-center justify-between px-3 lg:px-8 shrink-0 gap-3">
         <div className="flex items-center gap-3 lg:gap-4 min-w-0">
-          <div className="w-8 h-8 lg:w-10 lg:h-10 bg-gradient-to-br from-cyan-900 to-slate-900 rounded-xl border border-cyan-500/30 flex items-center justify-center shadow-[0_0_20px_rgba(6,182,212,0.15)]">
+          <div className="w-8 h-8 lg:w-10 lg:h-10 bg-gradient-to-br from-cyan-800 to-slate-900 rounded-xl border border-cyan-400/40 flex items-center justify-center shadow-[0_0_20px_rgba(6,182,212,0.2)]">
             <Binary size={20} className="text-cyan-400 lg:w-6 lg:h-6" />
           </div>
           <div className="min-w-0">
             <h1 className="text-base lg:text-xl font-black tracking-tight text-white leading-none mb-1 font-serif truncate">The Technology Trap</h1>
-            <p className="text-[9px] lg:text-[10px] text-slate-500 font-mono uppercase tracking-[0.3em] hidden sm:block">Knowledge Visualization</p>
+            <p className="text-[9px] lg:text-[10px] text-slate-300/85 font-mono uppercase tracking-[0.3em] hidden sm:block">Knowledge Visualization</p>
           </div>
         </div>
 
@@ -159,7 +159,7 @@ const App: React.FC = () => {
           <TooltipProvider delayDuration={120}>
             <TabsList
               variant="line"
-              className="inline-flex max-w-full items-center bg-slate-950/60 p-1 rounded-xl border border-white/5 backdrop-blur-md overflow-x-auto no-scrollbar h-auto gap-0 justify-start"
+              className="inline-flex max-w-full items-center bg-slate-900/70 p-1 rounded-xl border border-white/10 backdrop-blur-md overflow-x-auto no-scrollbar h-auto gap-0 justify-start"
             >
               {NAV_ITEMS.map((item, index) => (
                 <React.Fragment key={item.mode}>
@@ -174,11 +174,11 @@ const App: React.FC = () => {
         </div>
       </header>
 
-      <main className="flex-1 flex overflow-hidden relative bg-[#020617]">
+      <main className="flex-1 flex overflow-hidden relative bg-[#05162b]">
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
-            <div className="absolute top-[-10%] left-[-10%] w-[60%] h-[60%] rounded-full bg-cyan-500/10 blur-[160px] animate-pulse"></div>
-            <div className="absolute bottom-[-10%] right-[-10%] w-[60%] h-[60%] rounded-full bg-indigo-500/10 blur-[160px] animate-pulse delay-700"></div>
-            <div className="absolute top-[20%] right-[15%] w-[40%] h-[40%] rounded-full bg-purple-500/5 blur-[140px] animate-pulse delay-1000"></div>
+            <div className="absolute top-[-10%] left-[-10%] w-[60%] h-[60%] rounded-full bg-cyan-400/10 blur-[160px]"></div>
+            <div className="absolute bottom-[-10%] right-[-10%] w-[60%] h-[60%] rounded-full bg-indigo-400/10 blur-[160px]"></div>
+            <div className="absolute top-[20%] right-[15%] w-[40%] h-[40%] rounded-full bg-purple-400/6 blur-[140px]"></div>
         </div>
 
         <AnimatePresence mode="wait">

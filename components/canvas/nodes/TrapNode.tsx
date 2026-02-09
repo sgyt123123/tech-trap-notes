@@ -76,12 +76,12 @@ const TrapNode: React.FC<NodeProps<TrapFlowNodeData>> = ({ data, selected }) => 
   return (
     <div
       className={cn(
-        'w-[228px] rounded-[20px] border backdrop-blur-md transition-all duration-500 px-5 py-4',
+        'w-[268px] rounded-[22px] border backdrop-blur-md transition-all duration-500 px-5 py-[18px]',
         style.borderClass,
         style.backgroundClass,
         isActive && style.glowClass,
         isActive ? 'scale-[1.05] ring-1 ring-white/35' : 'scale-100',
-        isRelated ? 'opacity-100' : 'opacity-60 grayscale-[0.12]',
+        isRelated ? 'opacity-100' : 'opacity-72 grayscale-[0.06]',
         isActive && 'animate-pulse-subtle',
       )}
       aria-label={`节点 ${trapNode.label}`}
@@ -98,12 +98,12 @@ const TrapNode: React.FC<NodeProps<TrapFlowNodeData>> = ({ data, selected }) => 
       <div className="flex items-center justify-between gap-2">
         <div className={cn('inline-flex items-center gap-1.5', style.textClass)}>
           {nodeIcon}
-          <span className="text-sm font-bold tracking-wide leading-none">{trapNode.label}</span>
+          <span className="text-base font-bold tracking-wide leading-none">{trapNode.label}</span>
         </div>
-        <span className="text-[10px] uppercase tracking-wider text-slate-300/85">{trapNode.type}</span>
+        <span className="text-[11px] uppercase tracking-wider text-slate-100/90">{trapNode.type}</span>
       </div>
 
-      <p className="text-xs leading-snug text-slate-100/90 mt-2.5 line-clamp-2">{trapNode.description}</p>
+      <p className="text-[13px] leading-snug text-slate-100/95 mt-2.5 line-clamp-3">{trapNode.description}</p>
 
       {isStoryHighlighted ? (
         <div className="mt-2 h-0.5 rounded-full bg-cyan-400 shadow-[0_0_10px_rgba(34,211,238,0.7)]" />

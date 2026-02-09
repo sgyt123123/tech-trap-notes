@@ -63,11 +63,11 @@ const SemanticEdge: React.FC<EdgeProps<SemanticEdgeData>> = (props) => {
   const opacity = edgeData.storyMode
     ? edgeData.isHighlighted
       ? 1
-      : 0.35
+      : 0.5
     : edgeData.isConnected
-      ? 0.88
-      : 0.32;
-  const strokeWidth = edgeData.isHighlighted ? 2.8 : edgeData.isConnected ? 2 : 1.5;
+      ? 0.94
+      : 0.46;
+  const strokeWidth = edgeData.isHighlighted ? 3.2 : edgeData.isConnected ? 2.5 : 1.9;
   const shouldShowLabel = Boolean(edgeData.label) && (edgeData.isHighlighted || edgeData.isConnected);
 
   const [edgePath, labelX, labelY] = getBezierPath({
@@ -103,7 +103,7 @@ const SemanticEdge: React.FC<EdgeProps<SemanticEdgeData>> = (props) => {
         <EdgeLabelRenderer>
           <div
             className={cn(
-              'absolute -translate-x-1/2 -translate-y-1/2 px-2.5 py-1 rounded-full border text-[10px] font-semibold tracking-[0.08em] pointer-events-none backdrop-blur-sm',
+              'absolute -translate-x-1/2 -translate-y-1/2 px-3 py-1.5 rounded-full border text-[11px] font-semibold tracking-[0.08em] pointer-events-none backdrop-blur-sm',
               style.labelClassName,
             )}
             style={{
