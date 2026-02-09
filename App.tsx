@@ -112,7 +112,6 @@ const App: React.FC = () => {
     if (viewMode === ViewMode.MECHANISM) {
       return (
         <MechanismView
-          onRequestViewChange={handleContextNavigation}
           contextNodeId={contextNodeId}
         />
       );

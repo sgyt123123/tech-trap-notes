@@ -1,13 +1,10 @@
 import React, { useState } from 'react';
 import { Info, ChevronUp, ChevronDown } from 'lucide-react';
-import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import CanvasShell from '@/components/canvas/CanvasShell';
-import { cn } from '@/lib/utils';
 import { AnimatePresence, motion } from 'framer-motion';
 
 interface MechanismViewProps {
-  onRequestViewChange?: (mode: 'mechanism' | 'data' | 'compare' | 'future', anchorNodeId?: string) => void;
   contextNodeId?: string | null;
 }
 
@@ -16,6 +13,16 @@ interface MechanismViewProps {
  */
 const ViewInfoPanel: React.FC = () => {
   const [isExpanded, setIsExpanded] = useState(true);
+
+  React.useEffect(() => {
+    const timerId = window.setTimeout(() => {
+      setIsExpanded(false);
+    }, 5000);
+
+    return () => {
+      window.clearTimeout(timerId);
+    };
+  }, []);
 
   return (
     <div className="absolute top-6 left-6 z-20 max-w-md pointer-events-none">
@@ -65,7 +72,6 @@ const ViewInfoPanel: React.FC = () => {
 };
 
 const MechanismView: React.FC<MechanismViewProps> = ({
-  onRequestViewChange,
   contextNodeId = null,
 }) => {
   return (
@@ -74,7 +80,6 @@ const MechanismView: React.FC<MechanismViewProps> = ({
         <ViewInfoPanel />
         <CanvasShell
           contextNodeId={contextNodeId}
-          onRequestViewChange={onRequestViewChange}
         />
       </div>
     </div>

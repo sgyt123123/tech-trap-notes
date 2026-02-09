@@ -14,14 +14,14 @@ import CausalNavigation from './CausalNavigation';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { createFadeInMotion, createFadeSlideMotion, MECHANISM_MOTION } from '@/lib/motion';
 import { cn } from '@/lib/utils';
-import { Button } from '@/components/ui/button';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 interface InfoPanelProps {
   selectedNode: Node | null;
   onNavigate: (nodeId: string) => void;
-  onRequestViewChange?: (mode: 'mechanism' | 'data' | 'compare' | 'future', anchorNodeId?: string) => void;
 }
+
+type SectionKey = 'visual' | 'analysis' | 'links';
 
 interface NodeTypeConfig {
   color: string;
@@ -73,7 +73,7 @@ const NODE_VISUAL_COMPONENTS: Record<string, React.FC> = {
   trap: TrapVisual,
 };
 
-const InfoPanel: React.FC<InfoPanelProps> = ({ selectedNode, onNavigate, onRequestViewChange }) => {
+const InfoPanel: React.FC<InfoPanelProps> = ({ selectedNode, onNavigate }) => {
   const shouldReduceMotion = useReducedMotion();
   const emptyStateMotion = createFadeInMotion(shouldReduceMotion, MECHANISM_MOTION.enterDuration);
   const detailMotion = createFadeSlideMotion(
@@ -81,11 +81,76 @@ const InfoPanel: React.FC<InfoPanelProps> = ({ selectedNode, onNavigate, onReque
     MECHANISM_MOTION.shiftDistance,
     MECHANISM_MOTION.enterDuration,
   );
-  const [activeTab, setActiveTab] = React.useState<'visual' | 'analysis' | 'links'>('visual');
+  const [activeTab, setActiveTab] = React.useState<SectionKey>('visual');
+  const scrollAreaId = React.useId();
+  const sectionRefs = React.useRef<Record<SectionKey, HTMLDivElement | null>>({
+    visual: null,
+    analysis: null,
+    links: null,
+  });
 
   React.useEffect(() => {
     setActiveTab('visual');
-  }, [selectedNode?.id]);
+    const rootElement = document.getElementById(scrollAreaId);
+    const viewportElement = rootElement?.querySelector('[data-slot="scroll-area-viewport"]') as HTMLDivElement | null;
+
+    if (viewportElement) {
+      viewportElement.scrollTo({ top: 0, behavior: 'auto' });
+    }
+  }, [scrollAreaId, selectedNode?.id]);
+
+  React.useEffect(() => {
+    const rootElement = document.getElementById(scrollAreaId);
+    const viewportElement = rootElement?.querySelector('[data-slot="scroll-area-viewport"]') as HTMLDivElement | null;
+    if (!viewportElement) {
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visibleEntries = entries.filter((entry) => entry.isIntersecting);
+        if (visibleEntries.length === 0) {
+          return;
+        }
+
+        visibleEntries.sort((left, right) => right.intersectionRatio - left.intersectionRatio);
+        const nextActiveTab = visibleEntries[0].target.getAttribute('data-section') as SectionKey | null;
+        if (nextActiveTab) {
+          setActiveTab((previousTab) => (previousTab === nextActiveTab ? previousTab : nextActiveTab));
+        }
+      },
+      {
+        root: viewportElement,
+        threshold: [0.25, 0.45, 0.65],
+        rootMargin: '-12% 0px -50% 0px',
+      },
+    );
+
+    const currentRefs = sectionRefs.current;
+    const targets: HTMLDivElement[] = [currentRefs.visual, currentRefs.analysis, currentRefs.links].filter(
+      (item): item is HTMLDivElement => Boolean(item),
+    );
+    targets.forEach((target) => observer.observe(target));
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [scrollAreaId, selectedNode?.id]);
+
+  const handleSectionTabChange = (value: string) => {
+    const nextTab = value as SectionKey;
+    setActiveTab(nextTab);
+    const targetSection = sectionRefs.current[nextTab];
+    if (!targetSection) {
+      return;
+    }
+
+    targetSection.scrollIntoView({
+      behavior: shouldReduceMotion ? 'auto' : 'smooth',
+      block: 'start',
+      inline: 'nearest',
+    });
+  };
 
   if (!selectedNode) {
     return (
@@ -117,50 +182,6 @@ const InfoPanel: React.FC<InfoPanelProps> = ({ selectedNode, onNavigate, onReque
 
   const visualComponent = NODE_VISUAL_COMPONENTS[selectedNode.id];
   const nodeTypeConfig = NODE_TYPE_CONFIG[selectedNode.type];
-  const crossViewActions = onRequestViewChange ? (
-    <div className="pt-4 border-t border-slate-800">
-      <p className="text-[10px] uppercase tracking-widest text-slate-500 font-bold mb-3">跨维度锚点</p>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-        <Button
-          type="button"
-          variant="outline"
-          size="sm"
-          onClick={() => onRequestViewChange('data', selectedNode.id)}
-          className="justify-start border-slate-700 bg-slate-900 text-slate-300 hover:bg-slate-800 hover:text-white"
-        >
-          查看对应数据证据
-        </Button>
-        <Button
-          type="button"
-          variant="outline"
-          size="sm"
-          onClick={() => onRequestViewChange('compare', selectedNode.id)}
-          className="justify-start border-slate-700 bg-slate-900 text-slate-300 hover:bg-slate-800 hover:text-white"
-        >
-          查看历史镜像
-        </Button>
-      </div>
-    </div>
-  ) : null;
-
-  const renderScrollableContent = (content: React.ReactNode) => (
-    <ScrollArea
-      type="always"
-      scrollHideDelay={0}
-      className="h-full min-h-0 [&_[data-slot=scroll-area-scrollbar]]:w-2.5"
-      viewportClassName="h-full min-h-0"
-    >
-      <motion.div
-        key={`${selectedNode.id}-${activeTab}`}
-        className="px-4 lg:px-6 py-4 lg:py-5 space-y-5 pb-10"
-        initial={detailMotion.initial}
-        animate={detailMotion.animate}
-        transition={detailMotion.transition}
-      >
-        {content}
-      </motion.div>
-    </ScrollArea>
-  );
 
   return (
     <div className="h-full min-h-0 overflow-hidden bg-slate-900 shadow-[-20px_0_50px_rgba(0,0,0,0.45)] relative z-30 grid grid-rows-[auto_minmax(0,1fr)]">
@@ -195,7 +216,7 @@ const InfoPanel: React.FC<InfoPanelProps> = ({ selectedNode, onNavigate, onReque
 
       <Tabs
         value={activeTab}
-        onValueChange={(value) => setActiveTab(value as 'visual' | 'analysis' | 'links')}
+        onValueChange={handleSectionTabChange}
         className="h-full min-h-0 gap-0"
       >
         <div className="px-4 lg:px-6 py-2 border-b border-slate-700/80">
@@ -205,60 +226,84 @@ const InfoPanel: React.FC<InfoPanelProps> = ({ selectedNode, onNavigate, onReque
             <TabsTrigger value="links" className="text-xs">关联</TabsTrigger>
           </TabsList>
         </div>
-
-        <TabsContent value="visual" className="h-full min-h-0 m-0">
-          {renderScrollableContent(
-            <>
-              {visualComponent ? (
-                <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 min-w-0 overflow-visible">
-                  {React.createElement(visualComponent)}
-                </div>
-              ) : null}
-              {crossViewActions}
-            </>
-          )}
-        </TabsContent>
-
-        <TabsContent value="analysis" className="h-full min-h-0 m-0">
-          {renderScrollableContent(
-            <>
-              <div className="prose prose-invert prose-sm max-w-none prose-headings:font-sans prose-headings:font-bold prose-headings:tracking-tight prose-headings:text-slate-200 prose-h3:text-xl prose-h3:text-cyan-100 prose-h3:mt-8 prose-h3:mb-4 prose-h3:border-b prose-h3:border-slate-800 prose-h3:pb-2 prose-h4:text-xs prose-h4:uppercase prose-h4:tracking-widest prose-h4:text-slate-500 prose-h4:mt-8 prose-p:text-slate-400 prose-p:leading-7 prose-p:font-light prose-p:mb-4 prose-strong:text-white prose-strong:font-bold prose-li:text-slate-400 prose-li:marker:text-slate-700 prose-blockquote:border-l-cyan-500 prose-blockquote:bg-slate-900/50 prose-blockquote:py-3 prose-blockquote:px-5 prose-blockquote:rounded-r-lg prose-blockquote:not-italic prose-blockquote:text-slate-300 hr:border-slate-800 hr:my-8">
-                <ReactMarkdown>{selectedNode.detailedMarkdown}</ReactMarkdown>
-              </div>
-              {selectedNode.relatedConcepts.length > 0 && (
-                <div className="pt-6 border-t border-slate-800">
-                  <div className="flex items-center gap-2 mb-4 text-slate-500">
-                    <Hash size={14} className="text-slate-600" />
-                    <span className="text-xs uppercase tracking-wider font-bold font-mono">Related Concepts</span>
+        <div className="h-full min-h-0">
+          <ScrollArea
+            id={scrollAreaId}
+            type="always"
+            scrollHideDelay={0}
+            className="h-full min-h-0 [&_[data-slot=scroll-area-scrollbar]]:w-2.5"
+            viewportClassName="h-full min-h-0"
+          >
+            <motion.div
+              key={selectedNode.id}
+              className="px-4 lg:px-6 py-4 lg:py-5 space-y-8 pb-14"
+              initial={detailMotion.initial}
+              animate={detailMotion.animate}
+              transition={detailMotion.transition}
+            >
+              <section
+                ref={(element) => {
+                  sectionRefs.current.visual = element;
+                }}
+                data-section="visual"
+                className="space-y-4 scroll-mt-6"
+              >
+                <h3 className="text-xs uppercase tracking-[0.18em] text-cyan-200/80 font-semibold">图解</h3>
+                {visualComponent ? (
+                  <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 min-w-0 overflow-visible">
+                    {React.createElement(visualComponent)}
                   </div>
-                  <div className="flex flex-wrap gap-2">
-                    {selectedNode.relatedConcepts.map((concept, index) => (
-                      <span
-                        key={`${selectedNode.id}-${concept}-${index}`}
-                        className="group cursor-help flex items-center text-xs font-medium bg-slate-900 border border-slate-800 text-slate-400 px-3 py-1.5 rounded-lg transition-all hover:border-cyan-500/30 hover:text-cyan-300 hover:bg-cyan-950/20"
-                      >
-                        <Lightbulb size={12} className="mr-2 text-slate-700 group-hover:text-yellow-400 transition-colors" />
-                        {concept}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </>
-          )}
-        </TabsContent>
+                ) : null}
+              </section>
 
-        <TabsContent value="links" className="h-full min-h-0 m-0">
-          {renderScrollableContent(
-            <>
-              <div className="text-xs text-slate-400 bg-slate-900/50 border border-slate-800 rounded-lg px-3 py-2">
-                从当前节点出发，查看上游驱动与下游后果，形成完整因果链。
-              </div>
-              <CausalNavigation nodeId={selectedNode.id} onNavigate={onNavigate} />
-              {crossViewActions}
-            </>
-          )}
-        </TabsContent>
+              <section
+                ref={(element) => {
+                  sectionRefs.current.analysis = element;
+                }}
+                data-section="analysis"
+                className="space-y-5 scroll-mt-6"
+              >
+                <h3 className="text-xs uppercase tracking-[0.18em] text-cyan-200/80 font-semibold">解析</h3>
+                <div className="prose prose-invert prose-sm max-w-none prose-headings:font-sans prose-headings:font-bold prose-headings:tracking-tight prose-headings:text-slate-200 prose-h3:text-xl prose-h3:text-cyan-100 prose-h3:mt-8 prose-h3:mb-4 prose-h3:border-b prose-h3:border-slate-800 prose-h3:pb-2 prose-h4:text-xs prose-h4:uppercase prose-h4:tracking-widest prose-h4:text-slate-500 prose-h4:mt-8 prose-p:text-slate-400 prose-p:leading-7 prose-p:font-light prose-p:mb-4 prose-strong:text-white prose-strong:font-bold prose-li:text-slate-400 prose-li:marker:text-slate-700 prose-blockquote:border-l-cyan-500 prose-blockquote:bg-slate-900/50 prose-blockquote:py-3 prose-blockquote:px-5 prose-blockquote:rounded-r-lg prose-blockquote:not-italic prose-blockquote:text-slate-300 hr:border-slate-800 hr:my-8">
+                  <ReactMarkdown>{selectedNode.detailedMarkdown}</ReactMarkdown>
+                </div>
+                {selectedNode.relatedConcepts.length > 0 && (
+                  <div className="pt-6 border-t border-slate-800">
+                    <div className="flex items-center gap-2 mb-4 text-slate-500">
+                      <Hash size={14} className="text-slate-600" />
+                      <span className="text-xs uppercase tracking-wider font-bold font-mono">Related Concepts</span>
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      {selectedNode.relatedConcepts.map((concept, index) => (
+                        <span
+                          key={`${selectedNode.id}-${concept}-${index}`}
+                          className="group cursor-help flex items-center text-xs font-medium bg-slate-900 border border-slate-800 text-slate-400 px-3 py-1.5 rounded-lg transition-all hover:border-cyan-500/30 hover:text-cyan-300 hover:bg-cyan-950/20"
+                        >
+                          <Lightbulb size={12} className="mr-2 text-slate-700 group-hover:text-yellow-400 transition-colors" />
+                          {concept}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </section>
+
+              <section
+                ref={(element) => {
+                  sectionRefs.current.links = element;
+                }}
+                data-section="links"
+                className="space-y-4 scroll-mt-6"
+              >
+                <h3 className="text-xs uppercase tracking-[0.18em] text-cyan-200/80 font-semibold">关联</h3>
+                <div className="text-xs text-slate-400 bg-slate-900/50 border border-slate-800 rounded-lg px-3 py-2">
+                  从当前节点出发，查看上游驱动与下游后果，形成完整因果链。
+                </div>
+                <CausalNavigation nodeId={selectedNode.id} onNavigate={onNavigate} />
+              </section>
+            </motion.div>
+          </ScrollArea>
+        </div>
       </Tabs>
     </div>
   );

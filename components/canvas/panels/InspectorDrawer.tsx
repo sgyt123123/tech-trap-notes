@@ -3,30 +3,37 @@ import { PanelRightClose, PanelRightOpen } from 'lucide-react';
 import InfoPanel from '@/components/mechanism/InfoPanel';
 import { TRAP_LOGIC_MAP } from '@/constants';
 import { Button } from '@/components/ui/button';
-import { cn } from '@/lib/utils';
+import { Sheet, SheetContent } from '@/components/ui/sheet';
 import { useTrapFlowStore } from '@/state/trapFlowStore';
 
-interface InspectorDrawerProps {
-  onRequestViewChange?: (mode: 'mechanism' | 'data' | 'compare' | 'future', anchorNodeId?: string) => void;
-}
-
-const InspectorDrawer: React.FC<InspectorDrawerProps> = ({ onRequestViewChange }) => {
+const InspectorDrawer: React.FC = () => {
   const selectedNodeId = useTrapFlowStore((state) => state.selectedNodeId);
   const isOpen = useTrapFlowStore((state) => state.inspector.open);
   const closeInspector = useTrapFlowStore((state) => state.closeInspector);
   const openInspector = useTrapFlowStore((state) => state.openInspector);
   const selectNode = useTrapFlowStore((state) => state.selectNode);
-  const drawerWidth = 'clamp(340px, 34vw, 620px)';
 
   const selectedNode = useMemo(
     () => TRAP_LOGIC_MAP.nodes.find((node) => node.id === selectedNodeId) ?? null,
     [selectedNodeId],
   );
 
+  const handleOpenChange = React.useCallback(
+    (nextOpen: boolean) => {
+      if (nextOpen) {
+        openInspector();
+        return;
+      }
+
+      closeInspector();
+    },
+    [closeInspector, openInspector],
+  );
+
   return (
-    <div className="absolute top-4 right-4 bottom-4 z-50 pointer-events-none flex items-stretch">
+    <>
       {!isOpen ? (
-        <div className="pointer-events-auto self-start">
+        <div className="absolute top-4 right-4 z-50">
           <Button
             type="button"
             variant="outline"
@@ -40,35 +47,35 @@ const InspectorDrawer: React.FC<InspectorDrawerProps> = ({ onRequestViewChange }
         </div>
       ) : null}
 
-      <div
-        className={cn(
-          'pointer-events-auto h-full min-h-0 max-w-[calc(100vw-2rem)] transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)]',
-          isOpen ? 'translate-x-0 opacity-100 scale-100' : 'translate-x-[calc(100%+2rem)] opacity-0 scale-95',
-        )}
-        style={{ width: drawerWidth }}
-      >
-        <div className="relative h-full min-h-0 rounded-3xl overflow-hidden border border-slate-300/20 shadow-[0_28px_64px_-16px_rgba(2,6,23,0.75)] bg-slate-900/80 backdrop-blur-2xl">
-          <div className="absolute top-4 left-4 z-50">
+      <Sheet open={isOpen} onOpenChange={handleOpenChange} modal={false}>
+        <SheetContent
+          side="right"
+          showCloseButton={false}
+          showOverlay={false}
+          className="top-4 right-4 bottom-4 h-auto w-[clamp(340px,34vw,620px)] max-w-[calc(100vw-2rem)] sm:max-w-none border-0 bg-transparent shadow-none p-0 gap-0 overflow-visible"
+        >
+          <div className="relative h-full min-h-0">
             <Button
               type="button"
-              variant="ghost"
+              variant="outline"
               size="icon"
               onClick={closeInspector}
-              className="size-9 bg-slate-800/70 text-slate-200 hover:text-white hover:bg-slate-700/80 border border-slate-500/40 backdrop-blur-md rounded-xl transition-all"
+              className="absolute left-0 top-4 -translate-x-[56%] z-50 size-10 bg-slate-900/90 text-slate-100 hover:text-white hover:bg-slate-800 border border-slate-500/70 rounded-xl shadow-xl"
               aria-label="收起详情面板"
             >
               <PanelRightClose size={16} />
             </Button>
-          </div>
 
-          <InfoPanel
-            selectedNode={selectedNode}
-            onNavigate={(nodeId) => selectNode(nodeId, 'panel')}
-            onRequestViewChange={onRequestViewChange}
-          />
-        </div>
-      </div>
-    </div>
+            <div className="h-full min-h-0 rounded-3xl overflow-hidden border border-slate-300/20 shadow-[0_28px_64px_-16px_rgba(2,6,23,0.75)] bg-slate-900/80 backdrop-blur-2xl">
+              <InfoPanel
+                selectedNode={selectedNode}
+                onNavigate={(nodeId) => selectNode(nodeId, 'panel')}
+              />
+            </div>
+          </div>
+        </SheetContent>
+      </Sheet>
+    </>
   );
 };
 

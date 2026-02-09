@@ -6,12 +6,10 @@ import { useTrapFlowStore } from '@/state/trapFlowStore';
 
 interface CanvasShellProps {
   contextNodeId?: string | null;
-  onRequestViewChange?: (mode: 'mechanism' | 'data' | 'compare' | 'future', anchorNodeId?: string) => void;
 }
 
 const CanvasShell: React.FC<CanvasShellProps> = ({
   contextNodeId = null,
-  onRequestViewChange,
 }) => {
   const selectNode = useTrapFlowStore((state) => state.selectNode);
   const setStoryMode = useTrapFlowStore((state) => state.setStoryMode);
@@ -42,7 +40,7 @@ const CanvasShell: React.FC<CanvasShellProps> = ({
         >
           <TrapFlowCanvas className="h-full border-0 rounded-none" />
         </div>
-        <InspectorDrawer onRequestViewChange={onRequestViewChange} />
+        <InspectorDrawer />
       </div>
     </ReactFlowProvider>
   );
