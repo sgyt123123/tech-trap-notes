@@ -2,13 +2,13 @@ import React from 'react';
 import { Hammer, Flame } from 'lucide-react';
 
 const ResistanceVisual: React.FC = () => (
-    <div className="bg-slate-900/50 rounded-xl p-5 border border-slate-800 mb-6 flex flex-col items-center relative overflow-hidden group">
+    <div className="bg-slate-900/50 rounded-xl p-4 lg:p-5 border border-slate-800 mb-4 flex flex-col items-center relative overflow-visible group">
       <div className="w-full flex justify-between items-center text-xs font-bold text-slate-500 uppercase tracking-widest mb-4 z-10">
         <span>THE BREAKING POINT (阈值突破)</span>
       </div>
       
       {/* SVG Visual Area */}
-      <div className="w-full h-[300px] relative z-10">
+      <div className="w-full h-[220px] md:h-[260px] lg:h-[300px] relative z-10">
           <svg className="w-full h-full overflow-visible" viewBox="0 0 300 300">
              <defs>
                  <linearGradient id="pressureGrad" x1="0" y1="0" x2="0" y2="1">

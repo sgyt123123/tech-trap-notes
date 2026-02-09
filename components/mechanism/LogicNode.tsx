@@ -1,9 +1,10 @@
 
 import React from 'react';
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import { Node } from '../../types';
 import { Info, AlertTriangle, Zap, Sprout, Skull, Ban, Hammer, Hourglass, Activity } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { createMotionTransition, MECHANISM_MOTION } from '@/lib/motion';
 
 interface LogicNodeProps {
   node: Node;
@@ -54,11 +55,13 @@ const getNodeStyle = (node: Node): NodeStyle => {
 };
 
 const LogicNode: React.FC<LogicNodeProps> = ({ node, isSelected, isHovered, isRelated, onSelect, setHovered }) => {
+  const shouldReduceMotion = useReducedMotion();
   const nodeStyle = getNodeStyle(node);
   const nodeIcon = getNodeIcon(node);
   const isDecisionNode = node.id === 'institution_gap';
   const isActiveNode = isSelected || isHovered;
   const opacity = isRelated ? 1 : 0.2;
+  const nodeTransition = createMotionTransition(shouldReduceMotion, MECHANISM_MOTION.emphasisDuration);
 
   const handleSelect = () => onSelect(node);
   const handleKeyDown = (event: React.KeyboardEvent<SVGGElement>) => {
@@ -80,10 +83,10 @@ const LogicNode: React.FC<LogicNodeProps> = ({ node, isSelected, isHovered, isRe
       role="button"
       focusable
       aria-label={`查看节点：${node.label}`}
-      className="cursor-pointer group transition-opacity duration-500"
-      initial={{ opacity: 0, scale: 0.96 }}
-      animate={{ opacity, scale: isActiveNode ? 1.04 : 1 }}
-      transition={{ duration: 0.25, ease: 'easeOut' }}
+      className="cursor-pointer group transition-opacity duration-300"
+      initial={shouldReduceMotion ? false : { opacity: 0, scale: 0.96 }}
+      animate={shouldReduceMotion ? { opacity, scale: 1 } : { opacity, scale: isActiveNode ? 1.04 : 1 }}
+      transition={nodeTransition}
     >
       {isDecisionNode ? (
         <motion.rect
@@ -91,7 +94,7 @@ const LogicNode: React.FC<LogicNodeProps> = ({ node, isSelected, isHovered, isRe
           y={node.y - (isActiveNode ? 50 : 40)}
           width={isActiveNode ? 100 : 80}
           height={isActiveNode ? 100 : 80}
-          className={cn('fill-current transition-all duration-700 ease-in-out', nodeStyle.textClass)}
+          className={cn('fill-current transition-all duration-300 ease-out', nodeStyle.textClass)}
           style={{
             opacity: isActiveNode ? 0.25 : 0.05,
             transformBox: 'fill-box',
@@ -104,7 +107,7 @@ const LogicNode: React.FC<LogicNodeProps> = ({ node, isSelected, isHovered, isRe
           cx={node.x}
           cy={node.y}
           r={isActiveNode ? 60 : 45}
-          className={cn('fill-current transition-all duration-700 ease-in-out', nodeStyle.textClass)}
+          className={cn('fill-current transition-all duration-300 ease-out', nodeStyle.textClass)}
           style={{
             opacity: isActiveNode ? 0.25 : 0.05,
             transformBox: 'fill-box',
@@ -147,7 +150,7 @@ const LogicNode: React.FC<LogicNodeProps> = ({ node, isSelected, isHovered, isRe
       )}
 
       <foreignObject x={node.x - 12} y={node.y - 12} width="24" height="24" className={cn('pointer-events-none', nodeStyle.textClass)}>
-        <div className="flex items-center justify-center w-full h-full transition-transform duration-300 group-hover:scale-110">
+        <div className="flex items-center justify-center w-full h-full transition-transform duration-300 group-hover:scale-105">
           {nodeIcon}
         </div>
       </foreignObject>

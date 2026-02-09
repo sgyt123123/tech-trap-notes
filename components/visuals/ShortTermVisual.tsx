@@ -1,13 +1,13 @@
 import React from 'react';
 
 const ShortTermVisual: React.FC = () => (
-  <div className="bg-slate-900/50 rounded-xl p-5 border border-slate-800 mb-6 relative overflow-hidden group">
+  <div className="bg-slate-900/50 rounded-xl p-4 lg:p-5 border border-slate-800 mb-4 relative overflow-visible group">
     <div className="flex justify-between items-center text-xs font-bold text-slate-500 uppercase tracking-widest mb-4 z-10 relative">
       <span>The Decoupling (大分流)</span>
     </div>
     
-    <div className="h-32 w-full relative mt-2 z-10">
-        <svg className="w-full h-full overflow-visible" preserveAspectRatio="none" viewBox="0 0 300 120">
+    <div className="h-[160px] md:h-[180px] lg:h-[200px] w-full relative mt-1 z-10">
+        <svg className="w-full h-full overflow-visible" preserveAspectRatio="xMidYMid meet" viewBox="0 0 300 120">
             <defs>
                 <pattern id="painZone" patternUnits="userSpaceOnUse" width="6" height="6" patternTransform="rotate(45)">
                     <line x1="0" y1="0" x2="0" y2="6" stroke="#f87171" strokeWidth="2" opacity="0.2" />

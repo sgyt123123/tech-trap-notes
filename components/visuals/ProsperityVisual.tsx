@@ -2,7 +2,7 @@ import React from 'react';
 import { Zap, GraduationCap, ShieldCheck, TrendingUp } from 'lucide-react';
 
 const ProsperityVisual: React.FC = () => (
-    <div className="bg-slate-900/50 rounded-xl p-5 border border-slate-800 mb-6 relative overflow-visible min-h-[200px] flex flex-col">
+    <div className="bg-slate-900/50 rounded-xl p-4 lg:p-5 border border-slate-800 mb-4 relative overflow-visible min-h-0 flex flex-col">
        <div className="flex justify-between items-center text-xs font-bold text-slate-500 uppercase tracking-widest mb-4 relative z-10">
         <span>The Great Coupling (大融合)</span>
       </div>
@@ -12,7 +12,7 @@ const ProsperityVisual: React.FC = () => (
            style={{ backgroundImage: 'linear-gradient(#cbd5e1 1px, transparent 1px), linear-gradient(90deg, #cbd5e1 1px, transparent 1px)', backgroundSize: '20px 20px' }}>
       </div>
 
-      <div className="flex-1 flex items-center justify-center relative z-10 px-2 md:px-4">
+      <div className="h-[190px] md:h-[210px] lg:h-[230px] flex items-center justify-center relative z-10 px-2 md:px-4">
           {/* Mechanism */}
           <div className="relative w-full max-w-[320px] h-[180px]">
               {/* Connecting Belt/Chain */}

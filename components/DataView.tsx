@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
-import { TrendingUp } from 'lucide-react';
+import { ArrowLeft, TrendingUp } from 'lucide-react';
 import ProductivityChart from './data/ProductivityChart';
 import PolarizationChart from './data/PolarizationChart';
 import ConceptCards from './data/ConceptCards';
@@ -8,6 +8,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { createFadeSlideMotion } from '@/lib/motion';
+import { TRAP_LOGIC_MAP } from '../constants';
+import { Button } from '@/components/ui/button';
 
 type DataTab = 'historical' | 'modern';
 
@@ -15,6 +17,11 @@ interface DataTabOption {
   value: DataTab;
   label: string;
   activeClassName: string;
+}
+
+interface DataViewProps {
+  contextNodeId?: string | null;
+  onBackToMechanism?: (nodeId: string) => void;
 }
 
 const DATA_TAB_OPTIONS: DataTabOption[] = [
@@ -30,11 +37,35 @@ const DATA_TAB_OPTIONS: DataTabOption[] = [
   },
 ];
 
-const DataView: React.FC = () => {
+const DATA_CONTEXT_TAB_MAP: Partial<Record<string, DataTab>> = {
+  tech_shock: 'historical',
+  short_term: 'historical',
+  institution_gap: 'modern',
+  resistance: 'modern',
+  ford_paradox: 'modern',
+  trap: 'modern',
+};
+
+const DataView: React.FC<DataViewProps> = ({ contextNodeId = null, onBackToMechanism }) => {
   const [activeTab, setActiveTab] = useState<DataTab>('historical');
   const shouldReduceMotion = useReducedMotion();
   const tabContentMotion = createFadeSlideMotion(shouldReduceMotion, 6, 0.18);
   const gapName = activeTab === 'historical' ? '恩格斯的停顿 (1790-1840)' : '大分流 (1980-2024)';
+  const contextNode = useMemo(
+    () => TRAP_LOGIC_MAP.nodes.find((node) => node.id === contextNodeId) ?? null,
+    [contextNodeId],
+  );
+
+  useEffect(() => {
+    if (!contextNodeId) {
+      return;
+    }
+
+    const mappedTab = DATA_CONTEXT_TAB_MAP[contextNodeId];
+    if (mappedTab) {
+      setActiveTab(mappedTab);
+    }
+  }, [contextNodeId]);
 
   const handleActiveTabChange = (value: string) => {
     if (value === 'historical' || value === 'modern') {
@@ -50,6 +81,30 @@ const DataView: React.FC = () => {
             <h2 className="text-3xl lg:text-5xl font-serif font-black text-white tracking-tight mb-2">History Rhymes</h2>
             <p className="text-slate-500 font-mono text-xs lg:text-sm uppercase tracking-[0.4em]">Evidence: 1790 vs 2024</p>
           </div>
+
+          {contextNode ? (
+            <Card className="bg-slate-900/40 border-slate-800 shadow-none">
+              <CardContent className="p-4 lg:p-5 flex flex-wrap items-center justify-between gap-3">
+                <div>
+                  <p className="text-[10px] uppercase tracking-widest text-cyan-400 font-black mb-1">来自机制图谱的上下文</p>
+                  <p className="text-sm text-slate-300">
+                    当前查看节点「{contextNode.label}」对应的数据证据。
+                  </p>
+                </div>
+                {onBackToMechanism ? (
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => onBackToMechanism(contextNode.id)}
+                    className="border-slate-700 bg-slate-900 text-slate-300 hover:bg-slate-800 hover:text-white"
+                  >
+                    <ArrowLeft size={14} /> 返回机制图谱
+                  </Button>
+                ) : null}
+              </CardContent>
+            </Card>
+          ) : null}
 
           <div className="w-full flex flex-col gap-6">
             <div className="mb-2 flex flex-wrap justify-between items-start z-10 shrink-0 gap-4">

@@ -2,12 +2,12 @@ import React from 'react';
 import { AlertTriangle, Zap, Clock } from 'lucide-react';
 
 const InstitutionGapVisual: React.FC = () => (
-  <div className="bg-slate-900/50 rounded-xl p-5 border border-slate-800 mb-6 group relative">
+  <div className="bg-slate-900/50 rounded-xl p-4 lg:p-5 border border-slate-800 mb-4 group relative overflow-visible">
     <div className="flex justify-between items-center text-xs font-bold text-slate-500 uppercase tracking-widest mb-6">
       <span>Velocity Mismatch</span>
     </div>
     
-    <div className="relative flex flex-col gap-10 py-2">
+    <div className="relative flex flex-col gap-8 py-1 min-h-[170px] md:min-h-[190px] lg:min-h-[210px]">
         {/* Tech Row */}
         <div className="relative z-10">
             <div className="flex justify-between text-[10px] text-cyan-400 mb-2 font-bold">

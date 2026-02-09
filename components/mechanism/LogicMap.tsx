@@ -9,9 +9,18 @@ import { Card } from '@/components/ui/card';
 interface LogicMapProps {
   onNodeSelect: (node: Node) => void;
   selectedNodeId: string | null;
+  highlightedNodeIds?: Set<string>;
+  highlightedLinkKeys?: Set<string>;
+  storyMode?: boolean;
 }
 
-const LogicMap: React.FC<LogicMapProps> = ({ onNodeSelect, selectedNodeId }) => {
+const LogicMap: React.FC<LogicMapProps> = ({
+  onNodeSelect,
+  selectedNodeId,
+  highlightedNodeIds,
+  highlightedLinkKeys,
+  storyMode = false,
+}) => {
   const [hoveredNode, setHoveredNode] = useState<string | null>(null);
   const activeNodeId = hoveredNode || selectedNodeId;
   const nodesById = useMemo(
@@ -75,7 +84,11 @@ const LogicMap: React.FC<LogicMapProps> = ({ onNodeSelect, selectedNodeId }) => 
             return null;
           }
 
-          const isConnected = !activeNodeId || link.source === activeNodeId || link.target === activeNodeId;
+          const edgeKey = `${link.source}->${link.target}`;
+          const isHighlightedInStory = highlightedLinkKeys?.has(edgeKey) ?? false;
+          const isConnected = storyMode
+            ? isHighlightedInStory
+            : !activeNodeId || link.source === activeNodeId || link.target === activeNodeId;
 
           return (
             <LogicLink
@@ -84,19 +97,22 @@ const LogicMap: React.FC<LogicMapProps> = ({ onNodeSelect, selectedNodeId }) => 
               source={source}
               target={target}
               isConnected={isConnected}
-              activeNodeId={activeNodeId}
+              isHighlighted={isHighlightedInStory}
+              storyMode={storyMode}
             />
           );
         })}
 
         {TRAP_LOGIC_MAP.nodes.map((node) => {
-          const isRelated = activeNodeId
-            ? TRAP_LOGIC_MAP.links.some(
-                (link) =>
-                  (link.source === activeNodeId && link.target === node.id) ||
-                  (link.target === activeNodeId && link.source === node.id)
-              ) || activeNodeId === node.id
-            : true;
+          const isRelated = storyMode
+            ? highlightedNodeIds?.has(node.id) ?? false
+            : activeNodeId
+              ? TRAP_LOGIC_MAP.links.some(
+                  (link) =>
+                    (link.source === activeNodeId && link.target === node.id) ||
+                    (link.target === activeNodeId && link.source === node.id)
+                ) || activeNodeId === node.id
+              : true;
 
           return (
             <LogicNode

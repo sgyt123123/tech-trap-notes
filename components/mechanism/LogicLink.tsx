@@ -1,15 +1,27 @@
 import React from 'react';
+import { motion, useReducedMotion } from 'framer-motion';
 import { Link, Node } from '../../types';
+import { createMotionTransition, MECHANISM_MOTION } from '@/lib/motion';
 
 interface LogicLinkProps {
   link: Link;
   source: Node;
   target: Node;
   isConnected: boolean;
-  activeNodeId: string | null;
+  isHighlighted?: boolean;
+  storyMode?: boolean;
 }
 
-const LogicLink: React.FC<LogicLinkProps> = ({ link, source, target, isConnected, activeNodeId }) => {
+const LogicLink: React.FC<LogicLinkProps> = ({
+  link,
+  source,
+  target,
+  isConnected,
+  isHighlighted = false,
+  storyMode = false,
+}) => {
+    const shouldReduceMotion = useReducedMotion();
+    const linkTransition = createMotionTransition(shouldReduceMotion, MECHANISM_MOTION.emphasisDuration);
     // Determine path types
     const isProsperityPath = target.type === 'solution'; // Green path
     const isTrapPath = target.type === 'trap' || target.id === 'ford_paradox' || target.id === 'resistance'; // Red path grouping
@@ -18,7 +30,7 @@ const LogicLink: React.FC<LogicLinkProps> = ({ link, source, target, isConnected
     // Critical paths get more visual weight
     const isCriticalPath = isProsperityPath || isTrapPath || isUpwardLoop;
 
-    const opacity = isConnected ? 1 : 0.1;
+    const opacity = storyMode ? (isHighlighted ? 1 : 0.12) : (isConnected ? 1 : 0.1);
     
     // Dynamic Color Logic
     let strokeColor = '#475569'; // Default Slate
@@ -70,28 +82,33 @@ const LogicLink: React.FC<LogicLinkProps> = ({ link, source, target, isConnected
     }
 
     return (
-      <g className="transition-all duration-500 group/link" style={{ opacity }}>
+      <motion.g
+        className="group/link"
+        initial={false}
+        animate={{ opacity }}
+        transition={linkTransition}
+      >
         {/* Base Path (Background) */}
         <path
           d={d}
           fill="none"
           stroke={strokeColor}
-          strokeWidth={isCriticalPath ? 3 : 1.5}
-          strokeOpacity={isCriticalPath ? 0.3 : 0.2}
+          strokeWidth={isHighlighted ? 3.5 : isCriticalPath ? 3 : 1.5}
+          strokeOpacity={isHighlighted ? 0.95 : isCriticalPath ? 0.3 : 0.2}
           markerEnd={markerId}
           className="transition-all duration-300"
         />
         
         {/* Animated Flow Particle */}
-        {(isConnected) && (
+        {(storyMode ? isHighlighted : isConnected) && !shouldReduceMotion && (
          <path
           d={d}
           fill="none"
           stroke={strokeColor}
-          strokeWidth={isCriticalPath ? 3 : 2}
+          strokeWidth={isHighlighted ? 3.5 : isCriticalPath ? 3 : 2}
           strokeDasharray={isTrapPath ? "6,10" : "8,16"} // Trap is choppy, Prosperity is smooth
-          className={isTrapPath ? "animate-[flow_30s_linear_infinite]" : "animate-[flow_20s_linear_infinite]"}
-          strokeOpacity={isCriticalPath ? 0.9 : 0.6}
+          className={isTrapPath ? "animate-[flow_20s_linear_infinite]" : "animate-[flow_14s_linear_infinite]"}
+          strokeOpacity={isHighlighted ? 1 : isCriticalPath ? 0.9 : 0.6}
           strokeLinecap="round"
         />
         )}
@@ -121,7 +138,7 @@ const LogicLink: React.FC<LogicLinkProps> = ({ link, source, target, isConnected
              </div>
            </foreignObject>
         )}
-      </g>
+      </motion.g>
     );
 };
 

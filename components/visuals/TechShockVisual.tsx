@@ -2,13 +2,13 @@ import React from 'react';
 import { Zap, Scale, TrendingUp } from 'lucide-react';
 
 const TechShockVisual: React.FC = () => (
-  <div className="bg-slate-900/50 rounded-xl border border-slate-800 mb-6 relative overflow-hidden group">
-    <div className="absolute top-3 left-4 text-xs font-bold text-slate-500 uppercase tracking-widest z-10">
+  <div className="bg-slate-900/50 rounded-xl border border-slate-800 mb-4 p-4 lg:p-5 relative overflow-visible group">
+    <div className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-4 z-10 relative">
       The Fork in the Road
     </div>
     
-    <div className="w-full h-[280px]">
-        <svg className="w-full h-full overflow-visible" viewBox="0 0 300 280">
+    <div className="w-full h-[200px] md:h-[230px] lg:h-[250px]">
+        <svg className="w-full h-full overflow-visible" preserveAspectRatio="xMidYMid meet" viewBox="0 0 300 280">
             <defs>
                 <marker id="arrow-red" markerWidth="6" markerHeight="4" refX="5" refY="2" orient="auto">
                     <polygon points="0 0, 6 2, 0 4" fill="#f87171" />

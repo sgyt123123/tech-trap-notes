@@ -1,8 +1,8 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
-import { ERAS, COMPARISON_INSIGHTS } from '../constants';
+import { ERAS, COMPARISON_INSIGHTS, TRAP_LOGIC_MAP } from '../constants';
 import { HistoricalEra } from '../types';
-import { ArrowRightLeft, ScrollText, Brain } from 'lucide-react';
+import { ArrowLeft, ArrowRightLeft, ScrollText, Brain } from 'lucide-react';
 import EraCard from './comparison/EraCard';
 import ParadoxCard from './comparison/ParadoxCard';
 import { Button } from '@/components/ui/button';
@@ -16,12 +16,21 @@ import {
 } from '@/components/ui/tooltip';
 import { createFadeSlideMotion } from '@/lib/motion';
 
-const ComparisonView: React.FC = () => {
+interface ComparisonViewProps {
+  contextNodeId?: string | null;
+  onBackToMechanism?: (nodeId: string) => void;
+}
+
+const ComparisonView: React.FC<ComparisonViewProps> = ({ contextNodeId = null, onBackToMechanism }) => {
   const [era1, setEra1] = useState<HistoricalEra>(ERAS[0]); // IR1
   const [era2, setEra2] = useState<HistoricalEra>(ERAS[3]); // AI Age
   const shouldReduceMotion = useReducedMotion();
   const textMotion = createFadeSlideMotion(shouldReduceMotion, 6, 0.18);
   const paradoxMotion = createFadeSlideMotion(shouldReduceMotion, 8, 0.2);
+  const contextNode = useMemo(
+    () => TRAP_LOGIC_MAP.nodes.find((node) => node.id === contextNodeId) ?? null,
+    [contextNodeId],
+  );
 
   // Consistency Logic: Always sort eras chronologically to fetch the analysis text.
   const getComparisonText = (e1: HistoricalEra, e2: HistoricalEra) => {
@@ -49,6 +58,29 @@ const ComparisonView: React.FC = () => {
     setEra2(currentEra);
   };
 
+  useEffect(() => {
+    if (!contextNodeId) {
+      return;
+    }
+
+    if (contextNodeId === 'ford_paradox' || contextNodeId === 'trap') {
+      const industrialEra = ERAS.find((era) => era.id === 'IR2');
+      const aiEra = ERAS.find((era) => era.id === 'AI_AGE');
+      if (industrialEra && aiEra) {
+        setEra1(industrialEra);
+        setEra2(aiEra);
+      }
+      return;
+    }
+
+    const firstEra = ERAS.find((era) => era.id === 'IR1');
+    const aiEra = ERAS.find((era) => era.id === 'AI_AGE');
+    if (firstEra && aiEra) {
+      setEra1(firstEra);
+      setEra2(aiEra);
+    }
+  }, [contextNodeId]);
+
   return (
     <div className="flex-1 p-4 lg:p-8 relative z-10 animate-in zoom-in-95 duration-500 min-h-0">
       <ScrollArea className="h-full w-full">
@@ -61,6 +93,30 @@ const ComparisonView: React.FC = () => {
                         <span className="text-sm text-slate-600 font-mono mt-2 block">Compare systemic impacts across centuries</span>
                     </p>
             </div>
+
+            {contextNode ? (
+              <Card className="bg-slate-900/40 border-slate-800 shadow-none mb-4">
+                <CardContent className="p-4 lg:p-5 flex flex-wrap items-center justify-between gap-3">
+                  <div>
+                    <p className="text-[10px] uppercase tracking-widest text-cyan-400 font-black mb-1">来自机制图谱的上下文</p>
+                    <p className="text-sm text-slate-300">
+                      当前查看节点「{contextNode.label}」对应的历史镜像。
+                    </p>
+                  </div>
+                  {onBackToMechanism ? (
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={() => onBackToMechanism(contextNode.id)}
+                      className="border-slate-700 bg-slate-900 text-slate-300 hover:bg-slate-800 hover:text-white"
+                    >
+                      <ArrowLeft size={14} /> 返回机制图谱
+                    </Button>
+                  ) : null}
+                </CardContent>
+              </Card>
+            ) : null}
 
             <div className="flex-1 min-h-0 flex flex-col gap-6">
                 <div className="flex flex-col lg:flex-row gap-6 shrink-0 h-auto lg:h-[500px]">

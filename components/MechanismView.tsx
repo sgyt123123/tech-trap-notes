@@ -1,50 +1,84 @@
 import React, { useState } from 'react';
-import LogicMap from './mechanism/LogicMap';
-import InfoPanel from './mechanism/InfoPanel';
-import { Node } from '../types';
-import { TRAP_LOGIC_MAP } from '../constants';
+import { Info, ChevronUp, ChevronDown } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
-import { ScrollArea } from '@/components/ui/scroll-area';
+import { Button } from '@/components/ui/button';
+import CanvasShell from '@/components/canvas/CanvasShell';
+import { cn } from '@/lib/utils';
+import { AnimatePresence, motion } from 'framer-motion';
 
-const DEFAULT_NODE_ID = 'tech_shock';
+interface MechanismViewProps {
+  onRequestViewChange?: (mode: 'mechanism' | 'data' | 'compare' | 'future', anchorNodeId?: string) => void;
+  contextNodeId?: string | null;
+}
 
-const MechanismView: React.FC = () => {
-    const [selectedNode, setSelectedNode] = useState<Node | null>(() => {
-        const defaultNode = TRAP_LOGIC_MAP.nodes.find((node) => node.id === DEFAULT_NODE_ID);
-        return defaultNode ?? TRAP_LOGIC_MAP.nodes[0] ?? null;
-    });
+/**
+ * Floating Info Panel for the view description
+ */
+const ViewInfoPanel: React.FC = () => {
+  const [isExpanded, setIsExpanded] = useState(true);
 
-    // Helper to allow InfoPanel to drive navigation
-    const handleNodeNavigation = (nodeId: string) => {
-        const node = TRAP_LOGIC_MAP.nodes.find(n => n.id === nodeId);
-        if (node) setSelectedNode(node);
-    };
-
-    return (
-        <div className="flex w-full h-full relative animate-in fade-in duration-500 flex-col md:flex-row z-10">
-            <div className="flex-1 p-4 lg:p-8 min-h-0">
-                <ScrollArea className="h-full w-full">
-                <div className="max-w-6xl w-full space-y-4 lg:space-y-8 pb-24 mx-auto pr-2">
-                    <Card className="bg-gradient-to-r from-slate-900/80 to-slate-900/0 border-slate-800 backdrop-blur-sm shadow-none">
-                        <CardContent className="p-6 lg:p-8">
-                            <h2 className="text-2xl lg:text-3xl font-serif font-bold text-white mb-4">
-                                技术进步的双刃剑
-                            </h2>
-                            <p className="text-slate-400 leading-relaxed max-w-3xl font-light text-base lg:text-lg">
-                                技术进步并不总是带来线性繁荣。当技术是<b>“取代型”</b>时，它会切断普通人与经济增长的联系；只有当制度通过教育和福利进行响应，将技术转化为<b>“赋能型”</b>力量时，繁荣才会到来。
-                            </p>
-                        </CardContent>
-                    </Card>
-                    <LogicMap onNodeSelect={setSelectedNode} selectedNodeId={selectedNode?.id || null} />
-                </div>
-                </ScrollArea>
+  return (
+    <div className="absolute top-6 left-6 z-20 max-w-md pointer-events-none">
+      <motion.div 
+        layout
+        className="pointer-events-auto bg-slate-900/70 backdrop-blur-md border border-slate-400/30 rounded-2xl overflow-hidden shadow-xl"
+      >
+        <div className="p-4 flex items-center justify-between gap-4 border-b border-slate-400/20 bg-slate-800/60">
+          <div className="flex items-center gap-2.5">
+            <div className="p-1.5 bg-cyan-400/20 rounded-lg">
+              <Info size={16} className="text-cyan-200" />
             </div>
-            {/* Responsive Sidebar */}
-            <div className="h-[50svh] md:h-full w-full md:w-[min(45vw,460px)] xl:w-[min(40vw,540px)] border-t md:border-t-0 md:border-l border-white/5 z-20 bg-[#020617] shrink-0 min-h-0 shadow-2xl transition-all duration-300">
-                <InfoPanel selectedNode={selectedNode} onNavigate={handleNodeNavigation} />
-            </div>
+            <h2 className="text-sm font-bold tracking-tight text-white/90 uppercase">机制探索</h2>
+          </div>
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            className="h-7 w-7 text-slate-400 hover:text-white hover:bg-white/5"
+            onClick={() => setIsExpanded(!isExpanded)}
+          >
+            {isExpanded ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
+          </Button>
         </div>
-    );
+        
+        <AnimatePresence>
+          {isExpanded && (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: 'auto', opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.3, ease: "easeInOut" }}
+            >
+              <div className="p-5">
+                <h3 className="text-xl font-serif font-bold text-white mb-2 leading-tight">
+                  技术进步的双刃剑
+                </h3>
+                <p className="text-slate-200/90 text-sm leading-relaxed font-light">
+                  直接点击节点开始探索。右侧会同步展示图解、解析与关联内容，减少打断感，保持学习流畅。
+                </p>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </motion.div>
+    </div>
+  );
+};
+
+const MechanismView: React.FC<MechanismViewProps> = ({
+  onRequestViewChange,
+  contextNodeId = null,
+}) => {
+  return (
+    <div className="flex-1 w-full h-full min-h-0 relative animate-in fade-in duration-700 z-10 flex flex-col">
+      <div className="flex-1 relative min-h-0">
+        <ViewInfoPanel />
+        <CanvasShell
+          contextNodeId={contextNodeId}
+          onRequestViewChange={onRequestViewChange}
+        />
+      </div>
+    </div>
+  );
 };
 
 export default MechanismView;

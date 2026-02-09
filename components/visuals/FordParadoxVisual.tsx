@@ -2,15 +2,15 @@ import React from 'react';
 import { Ban, Factory, Users, Activity } from 'lucide-react';
 
 const FordParadoxVisual: React.FC = () => (
-    <div className="bg-slate-900/50 rounded-xl p-6 border border-slate-800 mb-6 w-full">
+    <div className="bg-slate-900/50 rounded-xl p-4 lg:p-5 border border-slate-800 mb-4 w-full">
          <div className="flex items-center justify-between mb-6">
              <h4 className="text-red-400 font-bold text-xs uppercase tracking-widest flex items-center gap-2">
                 <Ban size={16} /> The Broken Circuit (经济短路)
              </h4>
          </div>
          
-         {/* EXPANDED HEIGHT & WIDTH: 360x500 for maximum breathing room */}
-         <div className="w-full h-[420px] md:h-[500px] relative z-10 bg-slate-950/50 rounded-xl border border-red-500/10 overflow-visible">
+         {/* Responsive Visual Canvas */}
+         <div className="w-full h-[280px] md:h-[340px] lg:h-[420px] relative z-10 bg-slate-950/50 rounded-xl border border-red-500/10 overflow-visible">
           {/* Background Grid */}
           <div className="absolute inset-0 opacity-20 pointer-events-none" 
                style={{ backgroundImage: 'radial-gradient(#ef4444 1px, transparent 1px)', backgroundSize: '20px 20px' }}>

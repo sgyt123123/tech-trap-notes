@@ -19,7 +19,7 @@ const CausalNavigation: React.FC<CausalNavigationProps> = ({ nodeId, onNavigate 
     if (incoming.length === 0 && outgoing.length === 0) return null;
 
     return (
-        <div className="grid grid-cols-2 gap-4 mt-8 pt-6 border-t border-slate-800">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mt-8 pt-6 border-t border-slate-800">
             {/* Incoming / Upstream */}
             <div className="flex flex-col gap-2">
                 <span className="text-[10px] uppercase tracking-widest text-slate-500 font-bold flex items-center gap-1">

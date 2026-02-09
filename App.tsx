@@ -65,16 +65,16 @@ const AppNavItem: React.FC<AppNavItemProps> = ({ isActive, item }) => {
             type="button"
             variant="ghost"
             className={cn(
-              'relative h-10 lg:h-11 px-3 lg:px-4 rounded-xl transition-all duration-300 inline-flex items-center justify-center min-w-[72px] lg:min-w-[92px] border border-transparent',
+              'relative h-10 lg:h-11 px-2.5 lg:px-3.5 rounded-xl transition-all duration-300 inline-flex items-center justify-center gap-1.5 min-w-[66px] lg:min-w-[86px] border border-transparent',
               'text-slate-500 hover:text-slate-300 hover:bg-slate-900/50',
-              isActive && 'bg-slate-800/80 text-white shadow-lg border-slate-700 ring-1 ring-cyan-500/20'
+              isActive && 'bg-gradient-to-b from-slate-800 to-slate-900 text-white shadow-lg border-slate-700 ring-1 ring-cyan-500/20'
             )}
           >
-            <Icon size={16} className={cn('opacity-70', isActive && 'text-cyan-400 opacity-100')} />
-            <span className="text-sm font-bold tracking-wide">{label}</span>
+            <Icon size={15} className={cn('opacity-70 shrink-0', isActive && 'text-cyan-400 opacity-100')} />
+            <span className="text-sm font-bold tracking-wide leading-none">{label}</span>
             <div
               className={cn(
-                'absolute -bottom-px left-1/2 -translate-x-1/2 w-1/2 h-0.5 bg-cyan-500 shadow-[0_0_10px_#06b6d4] transition-opacity',
+                'absolute -bottom-px left-1/2 -translate-x-1/2 w-[55%] h-0.5 bg-cyan-500 shadow-[0_0_10px_#06b6d4] transition-opacity',
                 isActive ? 'opacity-100' : 'opacity-0'
               )}
             ></div>
@@ -90,6 +90,7 @@ const AppNavItem: React.FC<AppNavItemProps> = ({ isActive, item }) => {
 
 const App: React.FC = () => {
   const [viewMode, setViewMode] = useState<ViewMode>(ViewMode.MECHANISM);
+  const [contextNodeId, setContextNodeId] = useState<string | null>(null);
   const shouldReduceMotion = useReducedMotion();
   const contentMotion = createFadeSlideMotion(shouldReduceMotion);
 
@@ -98,13 +99,43 @@ const App: React.FC = () => {
       return;
     }
 
+    setContextNodeId(null);
     setViewMode(value as ViewMode);
   };
 
+  const handleContextNavigation = (mode: 'mechanism' | 'data' | 'compare' | 'future', anchorNodeId?: string) => {
+    setViewMode(mode as ViewMode);
+    setContextNodeId(anchorNodeId ?? null);
+  };
+
   const renderCurrentView = () => {
-    if (viewMode === ViewMode.MECHANISM) return <MechanismView />;
-    if (viewMode === ViewMode.DATA) return <DataView />;
-    if (viewMode === ViewMode.COMPARE) return <ComparisonView />;
+    if (viewMode === ViewMode.MECHANISM) {
+      return (
+        <MechanismView
+          onRequestViewChange={handleContextNavigation}
+          contextNodeId={contextNodeId}
+        />
+      );
+    }
+
+    if (viewMode === ViewMode.DATA) {
+      return (
+        <DataView
+          contextNodeId={contextNodeId}
+          onBackToMechanism={(nodeId) => handleContextNavigation('mechanism', nodeId)}
+        />
+      );
+    }
+
+    if (viewMode === ViewMode.COMPARE) {
+      return (
+        <ComparisonView
+          contextNodeId={contextNodeId}
+          onBackToMechanism={(nodeId) => handleContextNavigation('mechanism', nodeId)}
+        />
+      );
+    }
+
     return <FutureView />;
   };
 
@@ -125,11 +156,11 @@ const App: React.FC = () => {
           </div>
         </div>
 
-        <div className="min-w-0 flex-1 max-w-[62vw] sm:max-w-[66vw] lg:max-w-none">
+        <div className="min-w-0 flex-1 flex justify-end">
           <TooltipProvider delayDuration={120}>
             <TabsList
               variant="line"
-              className="flex items-center bg-slate-950/50 p-1 rounded-xl border border-white/5 backdrop-blur-md overflow-x-auto no-scrollbar h-auto gap-0 justify-start"
+              className="inline-flex max-w-full items-center bg-slate-950/60 p-1 rounded-xl border border-white/5 backdrop-blur-md overflow-x-auto no-scrollbar h-auto gap-0 justify-start"
             >
               {NAV_ITEMS.map((item, index) => (
                 <React.Fragment key={item.mode}>
@@ -145,9 +176,10 @@ const App: React.FC = () => {
       </header>
 
       <main className="flex-1 flex overflow-hidden relative bg-[#020617]">
-        <div className="absolute inset-0 pointer-events-none">
-            <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] rounded-full bg-cyan-900/5 blur-[120px] animate-pulse"></div>
-            <div className="absolute bottom-[-20%] right-[-10%] w-[50%] h-[50%] rounded-full bg-purple-900/5 blur-[120px] animate-pulse delay-700"></div>
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+            <div className="absolute top-[-10%] left-[-10%] w-[60%] h-[60%] rounded-full bg-cyan-500/10 blur-[160px] animate-pulse"></div>
+            <div className="absolute bottom-[-10%] right-[-10%] w-[60%] h-[60%] rounded-full bg-indigo-500/10 blur-[160px] animate-pulse delay-700"></div>
+            <div className="absolute top-[20%] right-[15%] w-[40%] h-[40%] rounded-full bg-purple-500/5 blur-[140px] animate-pulse delay-1000"></div>
         </div>
 
         <AnimatePresence mode="wait">

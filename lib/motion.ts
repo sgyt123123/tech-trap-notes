@@ -10,6 +10,19 @@ interface FadeSlideMotionConfig extends FadeInMotionConfig {
   exit: TargetAndTransition;
 }
 
+export const MECHANISM_MOTION = {
+  enterDuration: 0.22,
+  emphasisDuration: 0.2,
+  shiftDistance: 8,
+} as const;
+
+export function createMotionTransition(
+  shouldReduceMotion: boolean,
+  duration = MECHANISM_MOTION.enterDuration,
+): Transition {
+  return shouldReduceMotion ? { duration: 0 } : { duration, ease: 'easeOut' };
+}
+
 export function createFadeInMotion(
   shouldReduceMotion: boolean,
   duration = 0.25,
@@ -17,7 +30,7 @@ export function createFadeInMotion(
   return {
     initial: shouldReduceMotion ? false : { opacity: 0 },
     animate: { opacity: 1 },
-    transition: shouldReduceMotion ? { duration: 0 } : { duration, ease: 'easeOut' },
+    transition: createMotionTransition(shouldReduceMotion, duration),
   };
 }
 
@@ -30,6 +43,6 @@ export function createFadeSlideMotion(
     initial: shouldReduceMotion ? false : { opacity: 0, y: distance },
     animate: shouldReduceMotion ? { opacity: 1 } : { opacity: 1, y: 0 },
     exit: shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: -distance },
-    transition: shouldReduceMotion ? { duration: 0 } : { duration, ease: 'easeOut' },
+    transition: createMotionTransition(shouldReduceMotion, duration),
   };
 }

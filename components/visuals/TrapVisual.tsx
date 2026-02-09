@@ -2,7 +2,7 @@ import React from 'react';
 import { Repeat } from 'lucide-react';
 
 const TrapVisual: React.FC = () => (
-    <div className="bg-slate-900/50 rounded-xl p-4 lg:p-5 border border-slate-800 mb-4 w-full">
+    <div className="bg-slate-900/50 rounded-xl p-4 lg:p-5 border border-slate-800 mb-4 w-full overflow-visible">
       <div className="flex justify-between items-center text-xs font-bold text-slate-500 uppercase tracking-widest mb-5">
         <span>System Failure: The Stagnation Cycle</span>
       </div>
