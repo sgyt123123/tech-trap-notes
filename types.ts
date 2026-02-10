@@ -14,6 +14,21 @@ export interface HistoricalEra {
   socialImpact: string;
 }
 
+export interface ComparisonInsight {
+  title: string;
+  summary: string;
+  mechanism: string;
+  signal: string;
+}
+
+export interface ComparisonPairOption {
+  key: string;
+  eraAId: string;
+  eraBId: string;
+  label: string;
+  focus: string;
+}
+
 export interface DataPoint {
   year: number;
   productivity: number;

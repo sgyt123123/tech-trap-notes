@@ -1,5 +1,5 @@
 
-import { ChartData, DataPoint, HistoricalEra, FutureScenario } from './types';
+import { ChartData, ComparisonInsight, ComparisonPairOption, DataPoint, HistoricalEra, FutureScenario } from './types';
 import { Shield, Zap, TrendingUp, Anchor, Cpu, Factory, Database, Brain, Target, Layers } from 'lucide-react';
 
 export const DATA_SOURCES = {
@@ -266,20 +266,127 @@ export const ERAS: HistoricalEra[] = [
   }
 ];
 
-// Unified Comparison Insights (Canonical Truth)
-export const COMPARISON_INSIGHTS: Record<string, string> = {
-    // IR1 Comparisons
-    'IR1_IR2': "【去技能化 vs 再技能化】第一次革命通过机械化将工匠变为普通操作工（技能贬值）；第二次革命通过电气化和新产业创造了全新的工程师和白领阶层（技能溢价）。前者引发冲突，后者带来融合。",
-    'IR1_IR3': "【体力的替代 vs 脑力的替代】两者都属于“替代型”革命。IR1 摧毁了手工艺人（织工），IR3 摧毁了常规白领（文员）。两者都导致了劳动收入份额的下降和社会的极化，且初期都缺乏社会保障网。",
-    'IR1_AI_AGE': "【历史的押韵：新恩格斯停顿】我们正站在新周期的起点。如同 19 世纪初，AI 带来了生产力的飞跃，但也可能导致长期的工资停滞。当时的卢德运动是对生计被毁的理性反应，今天我们看到的“技术抵制”和监管呼声也是同理。",
-    
-    // IR2 Comparisons
-    'IR2_IR3': "【中产阶级的兴与衰】IR2 建立了庞大的中产阶级（橄榄型社会），而 IR3（计算机化）开始解构这一阶层（哑铃型社会）。IR2 时代，教育（高中运动）跑赢了技术；IR3 时代，技术跑赢了教育。",
-    'IR2_AI_AGE': "【流水线悖论：正和 vs 零和】福特流水线通过降低产品成本创造了巨大的新需求，让普工也能致富（把蛋糕做大）。AI 则不同，它通过将认知成本归零直接摧毁了知识服务的稀缺性溢价，且不需要大量人类填补产能（挤出效应）。福特制造了“工作”，AI 旨在制造“无人闭环”。",
+const COMPARISON_ERA_ORDER = ERAS.reduce<Record<string, number>>((lookup, era, index) => {
+  lookup[era.id] = index;
+  return lookup;
+}, {});
 
-    // IR3 Comparisons
-    'IR3_AI_AGE': "【从规则到概率】IR3 替代的是“基于规则”的常规任务（如计算、归档），因此高技能的创造性工作是安全的。但 AI 打破了这一防线，它能处理“非规则”的创造性任务（写作、编程）。避风港正在消失。",
+const formatEraLabel = (era: HistoricalEra) => era.name.split(' (')[0];
+
+export const buildComparisonPairKeyByEraId = (eraAId: string, eraBId: string) => {
+  const orderedIds = [eraAId, eraBId].sort(
+    (leftId, rightId) => (COMPARISON_ERA_ORDER[leftId] ?? Number.MAX_SAFE_INTEGER) - (COMPARISON_ERA_ORDER[rightId] ?? Number.MAX_SAFE_INTEGER),
+  );
+  return `${orderedIds[0]}_${orderedIds[1]}`;
 };
+
+export const buildComparisonPairKey = (eraA: HistoricalEra, eraB: HistoricalEra) =>
+  buildComparisonPairKeyByEraId(eraA.id, eraB.id);
+
+// Unified Comparison Insights (Canonical Truth)
+export const COMPARISON_INSIGHTS: Record<string, ComparisonInsight> = {
+  // IR1 Comparisons
+  IR1_IR2: {
+    title: '去技能化 vs 再技能化',
+    summary: 'IR1 通过机械化压低工匠价值；IR2 通过电气化和新产业重建职业阶梯，带来更强的社会吸纳能力。',
+    mechanism: '核心差异不在技术强度，而在是否同步创造新任务、新职业和教育供给。',
+    signal: '若技术扩散只替代存量岗位，冲突会积累；若同步扩岗与再培训，更容易走向包容性繁荣。',
+  },
+  IR1_IR3: {
+    title: '体力替代 vs 脑力替代',
+    summary: 'IR1 打击手工艺人，IR3 打击常规白领，两次革命都压缩中间层并放大分配不均。',
+    mechanism: '当技术优先替代标准化任务，劳动收入份额下降、资本回报上升，社会结构向两极分化。',
+    signal: '越缺少早期安全网和再分配机制，越容易重演“生产率上升而多数人停滞”的轨迹。',
+  },
+  IR1_AI_AGE: {
+    title: '历史押韵：新恩格斯停顿',
+    summary: 'AI 与 IR1 一样同时带来效率跃迁与收入焦虑，社会对技术抵制和监管呼声正在增强。',
+    mechanism: '生产率增长先被资本化，制度与教育更新滞后，导致长期工资停滞与阶层紧张。',
+    signal: '窗口期不在“是否拥抱 AI”，而在能否提前构建缓冲机制，避免代际级的制度时滞。',
+  },
+
+  // IR2 Comparisons
+  IR2_IR3: {
+    title: '中产阶级的兴与衰',
+    summary: 'IR2 在教育扩张与产业升级中壮大中产；IR3 在自动化和全球化中持续侵蚀中间层。',
+    mechanism: '当教育供给跑赢技术变化，社会呈橄榄型；当技术跑赢教育，社会会向哑铃型演化。',
+    signal: '观察“新岗位创造速度 / 中层岗位消失速度”比值，可提前判断结构是否进入失衡区。',
+  },
+  IR2_AI_AGE: {
+    title: '流水线悖论：正和 vs 挤出',
+    summary: '福特流水线通过降本激活新需求并扩张就业，AI 则可能通过认知成本归零直接挤出知识服务溢价。',
+    mechanism: '前者是“需求扩张驱动扩岗”，后者更可能是“效率提升驱动减岗”，就业弹性显著不同。',
+    signal: '如果 AI 主要替代认知执行层而非创造新服务需求，中产收缩速度会快于历史工业化阶段。',
+  },
+
+  // IR3 Comparisons
+  IR3_AI_AGE: {
+    title: '从规则到概率',
+    summary: 'IR3 主要替代规则化任务，AI 正进入非规则创造任务，传统高技能避风港正在缩小。',
+    mechanism: '当模型能力覆盖“分析-表达-生成”闭环，知识工作的门槛与回报结构会被重写。',
+    signal: '需要从“技能熟练度竞争”转向“问题定义与系统协同竞争”，否则会被能力平权反噬。',
+  },
+};
+
+export const DEFAULT_COMPARISON_INSIGHT: ComparisonInsight = {
+  title: '结构镜像待补全',
+  summary: '当前组合暂无预设洞见，建议先从技术路径与劳动力变化入手做一轮基线对照。',
+  mechanism: '先比较“替代/赋能”属性，再验证制度响应速度与社会分配结果是否匹配。',
+  signal: '若维度结论相互矛盾，通常意味着存在被忽略的制度变量或时间滞后。',
+};
+
+export const getComparisonInsight = (eraA: HistoricalEra, eraB: HistoricalEra) =>
+  COMPARISON_INSIGHTS[buildComparisonPairKey(eraA, eraB)] ?? DEFAULT_COMPARISON_INSIGHT;
+
+export const COMPARISON_PAIR_OPTIONS: ComparisonPairOption[] = ERAS.flatMap((leftEra, leftIndex) =>
+  ERAS.slice(leftIndex + 1).map((rightEra) => {
+    const key = buildComparisonPairKey(leftEra, rightEra);
+    return {
+      key,
+      eraAId: leftEra.id,
+      eraBId: rightEra.id,
+      label: `${formatEraLabel(leftEra)} ↔ ${formatEraLabel(rightEra)}`,
+      focus: COMPARISON_INSIGHTS[key]?.title ?? '跨时代结构对照',
+    };
+  }),
+);
+
+export const COMPARISON_NAV_COPY = {
+  title: '全时代对比矩阵',
+  subtitle: '采用上三角矩阵，去除重复组合噪音。',
+  instruction: '点击上三角非对角单元格，切换镜像引擎主视图。',
+} as const;
+
+export const COMPARISON_PANEL_COPY = {
+    overviewLabel: '结构洞见',
+    dimensionLabel: '当前透视维度',
+    summaryLabel: '结论摘要',
+    mechanismLabel: '机制解释',
+    signalLabel: '风险信号',
+} as const;
+
+export const COMPARISON_DIMENSION_GUIDANCE: Record<string, string> = {
+    tech: '聚焦技术范式：对照两侧核心技术如何塑造后续劳动结构与制度响应。',
+    labor: '聚焦劳动关系：判断技术是在替代既有岗位，还是在放大人类能力。',
+    institution: '聚焦制度时滞：比较治理体系能否跟上技术扩散速度。',
+    impact: '聚焦结果验证：从分配、阶层和社会稳定性反推机制是否健康。',
+};
+
+export const COMPARISON_INSTITUTION_COPY = {
+    aiAge: '处于变革初期，法律与教育体系正在被迫加速调整。',
+    historicalDefault: '历史上的典型滞后：先有机器冲击，数十年后才有社会保障。',
+} as const;
+
+export const COMPARISON_DIMENSION_SUB_COPY = {
+    tech: '核心技术能力',
+    institution: '社会契约调整',
+    impact: '生产力分配',
+    laborByType: {
+        replacing: '取代型 (Labor Replacing)',
+        enabling: '赋能型 (Labor Enabling)',
+        hybrid: '混合型 (Hybrid)',
+    },
+} as const;
 
 // Data for Mirror Page: Macro Economic Paradox
 export const FORD_VS_AI_DATA = {

@@ -1,19 +1,19 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
-import { ERAS, COMPARISON_INSIGHTS, TRAP_LOGIC_MAP } from '../constants';
+import { motion, useReducedMotion } from 'framer-motion';
+import {
+  buildComparisonPairKeyByEraId,
+  COMPARISON_NAV_COPY,
+  COMPARISON_PAIR_OPTIONS,
+  ERAS,
+  TRAP_LOGIC_MAP,
+} from '../constants';
 import { HistoricalEra } from '../types';
-import { ArrowLeft, ArrowRightLeft, ScrollText, Brain } from 'lucide-react';
-import EraCard from './comparison/EraCard';
+import { ArrowLeft, Sparkles } from 'lucide-react';
+import TemporalEchoEngine from './comparison/engine/TemporalEchoEngine';
 import ParadoxCard from './comparison/ParadoxCard';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '@/components/ui/tooltip';
 import { createFadeSlideMotion } from '@/lib/motion';
 
 interface ComparisonViewProps {
@@ -25,37 +25,44 @@ const ComparisonView: React.FC<ComparisonViewProps> = ({ contextNodeId = null, o
   const [era1, setEra1] = useState<HistoricalEra>(ERAS[0]); // IR1
   const [era2, setEra2] = useState<HistoricalEra>(ERAS[3]); // AI Age
   const shouldReduceMotion = useReducedMotion();
-  const textMotion = createFadeSlideMotion(shouldReduceMotion, 6, 0.18);
   const paradoxMotion = createFadeSlideMotion(shouldReduceMotion, 8, 0.2);
   const contextNode = useMemo(
     () => TRAP_LOGIC_MAP.nodes.find((node) => node.id === contextNodeId) ?? null,
     [contextNodeId],
   );
-
-  // Consistency Logic: Always sort eras chronologically to fetch the analysis text.
-  const getComparisonText = (e1: HistoricalEra, e2: HistoricalEra) => {
-      if (e1.id === e2.id) return "请选择两个不同的时期进行对比。";
-      
-      const sorted = [e1, e2].sort((a, b) => a.yearStart - b.yearStart);
-      const key = `${sorted[0].id}_${sorted[1].id}`;
-
-      return COMPARISON_INSIGHTS[key] || "暂无该组合的详细对比数据。";
-  };
-
-  const comparisonText = useMemo(() => getComparisonText(era1, era2), [era1, era2]);
-  const sortedIds = [era1.id, era2.id].sort();
-  const isFordVsAI = sortedIds[0] === 'IR2' && sortedIds[1] === 'AI_AGE';
-  const comparisonKey = `${era1.id}-${era2.id}`;
-
-  const comparisonParagraphs = useMemo(
-    () => comparisonText.split('。').map((sentence) => sentence.trim()).filter(Boolean),
-    [comparisonText]
+  const eraById = useMemo(
+    () => ERAS.reduce<Record<string, HistoricalEra>>((lookup, era) => {
+      lookup[era.id] = era;
+      return lookup;
+    }, {}),
+    [],
+  );
+  const activeComparisonKey = useMemo(
+    () => buildComparisonPairKeyByEraId(era1.id, era2.id),
+    [era1.id, era2.id],
+  );
+  const activePair = useMemo(
+    () => COMPARISON_PAIR_OPTIONS.find((pair) => pair.key === activeComparisonKey) ?? null,
+    [activeComparisonKey],
+  );
+  const pairOptionByKey = useMemo(
+    () => COMPARISON_PAIR_OPTIONS.reduce<Record<string, (typeof COMPARISON_PAIR_OPTIONS)[number]>>((lookup, option) => {
+      lookup[option.key] = option;
+      return lookup;
+    }, {}),
+    [],
   );
 
-  const handleSwapEras = () => {
-    const currentEra = era1;
-    setEra1(era2);
-    setEra2(currentEra);
+  const isFordVsAI = activeComparisonKey === 'IR2_AI_AGE';
+
+  const handleSelectPair = (eraAId: string, eraBId: string) => {
+    const nextEraA = eraById[eraAId];
+    const nextEraB = eraById[eraBId];
+    if (!nextEraA || !nextEraB) {
+      return;
+    }
+    setEra1(nextEraA);
+    setEra2(nextEraB);
   };
 
   useEffect(() => {
@@ -86,16 +93,18 @@ const ComparisonView: React.FC<ComparisonViewProps> = ({ contextNodeId = null, o
       <ScrollArea className="h-full w-full">
         <div className="max-w-7xl mx-auto min-h-full flex flex-col pr-2">
             {/* Header */}
-            <div className="mb-6 lg:mb-10 text-center shrink-0">
-                    <h2 className="text-3xl lg:text-4xl font-serif font-black text-white mb-4">历史镜像</h2>
+            <div className="mb-8 lg:mb-12 text-center shrink-0">
+                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-[10px] font-black uppercase tracking-widest mb-4">
+                      <Sparkles size={12} /> Temporal Mirroring
+                    </div>
+                    <h2 className="text-4xl lg:text-5xl font-serif font-black text-white mb-4 tracking-tight">时空镜像引擎</h2>
                     <p className="text-slate-400 max-w-2xl mx-auto font-light text-base lg:text-lg">
-                        "我们是否正在重演19世纪的悲剧？"<br/>
-                        <span className="text-sm text-slate-600 font-mono mt-2 block">Compare systemic impacts across centuries</span>
+                        "剥离技术的表象，透视系统演进的底层同构。"
                     </p>
             </div>
 
             {contextNode ? (
-              <Card className="bg-slate-900/40 border-slate-800 shadow-none mb-4">
+              <Card className="bg-slate-900/40 border-slate-800 shadow-none mb-6">
                 <CardContent className="p-4 lg:p-5 flex flex-wrap items-center justify-between gap-3">
                   <div>
                     <p className="text-[10px] uppercase tracking-widest text-cyan-400 font-black mb-1">来自机制图谱的上下文</p>
@@ -111,89 +120,107 @@ const ComparisonView: React.FC<ComparisonViewProps> = ({ contextNodeId = null, o
                       onClick={() => onBackToMechanism(contextNode.id)}
                       className="border-slate-700 bg-slate-900 text-slate-300 hover:bg-slate-800 hover:text-white"
                     >
-                      <ArrowLeft size={14} /> 返回机制图谱
+                      <ArrowLeft size={14} className="mr-2" /> 返回机制图谱
                     </Button>
                   ) : null}
                 </CardContent>
               </Card>
             ) : null}
 
-            <div className="flex-1 min-h-0 flex flex-col gap-6">
-                <div className="flex flex-col lg:flex-row gap-6 shrink-0 h-auto lg:h-[500px]">
-                    <div className="flex-1 min-w-0 h-[400px] lg:h-auto">
-                        <EraCard era={era1} setEra={setEra1} label="卡片 A" />
+            <div className="flex-1 min-h-0 flex flex-col gap-12">
+                <Card className="bg-slate-900/35 border-slate-800/80 shadow-none">
+                  <CardContent className="p-4 lg:p-5">
+                    <div className="flex flex-col gap-1 mb-3">
+                      <p className="text-[10px] uppercase tracking-widest text-cyan-400 font-black">
+                        {COMPARISON_NAV_COPY.title}
+                      </p>
+                      <p className="text-xs text-slate-400">{COMPARISON_NAV_COPY.subtitle}</p>
+                      <p className="text-xs text-slate-500">{COMPARISON_NAV_COPY.instruction}</p>
                     </div>
 
-                    {/* Analysis Center */}
-                    <div className="lg:w-2/5 flex flex-col shrink-0">
-                        <div className="flex items-center justify-center -my-3 z-10 lg:my-auto lg:-mx-4 lg:order-none order-first">
-                          <TooltipProvider delayDuration={150}>
-                            <Tooltip>
-                              <TooltipTrigger asChild>
-                                <Button
-                                  type="button"
-                                  size="icon"
-                                  variant="outline"
-                                  onClick={handleSwapEras}
-                                  aria-label="交换两侧时代卡片"
-                                  className="bg-slate-800 border-slate-700 text-cyan-400 relative hover:scale-110 transition-transform rounded-full size-12"
-                                >
-                                  <ArrowRightLeft size={24} />
-                                  <div className="absolute inset-0 bg-cyan-400/20 rounded-full animate-ping opacity-20"></div>
-                                </Button>
-                              </TooltipTrigger>
-                              <TooltipContent side="top" sideOffset={8}>
-                                交换左右时期
-                              </TooltipContent>
-                            </Tooltip>
-                          </TooltipProvider>
-                        </div>
+                    <ScrollArea className="w-full">
+                      <div className="min-w-[820px] grid grid-cols-[170px_repeat(3,minmax(0,1fr))] gap-2">
+                        <div className="h-20 rounded-md border border-slate-800/70 bg-slate-950/40" />
+                        {ERAS.slice(1).map((columnEra) => (
+                          <div
+                            key={`column-${columnEra.id}`}
+                            className="h-20 rounded-md border border-slate-800/70 bg-slate-950/40 px-3 py-2 flex items-center justify-center text-center"
+                          >
+                            <p className="text-xs font-semibold text-slate-200 leading-snug">{columnEra.name}</p>
+                          </div>
+                        ))}
 
-                        <Card className="bg-slate-900 p-6 lg:p-8 rounded-xl border border-slate-800 shadow-2xl flex-1 flex flex-col justify-center min-h-[250px] relative overflow-hidden">
-                            {/* Decorative background */}
-                            <div className="absolute top-0 right-0 p-32 bg-cyan-500/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none"></div>
-
-                            <CardHeader className="px-0 pb-4 border-b border-slate-800 shrink-0 relative z-10">
-                              <CardTitle className="text-cyan-400 text-xs font-black uppercase flex items-center gap-2 tracking-widest">
-                                <ScrollText size={14} /> 历史回响分析
-                              </CardTitle>
-                            </CardHeader>
-                            <CardContent className="px-0 pt-4 flex-1 min-h-0 relative z-10">
-                              <ScrollArea className="h-full pr-2">
-                                <AnimatePresence mode="wait">
-                                  <motion.div
-                                    key={comparisonKey}
-                                    initial={textMotion.initial}
-                                    animate={textMotion.animate}
-                                    exit={textMotion.exit}
-                                    transition={textMotion.transition}
-                                    className="text-sm lg:text-base text-slate-300 leading-relaxed text-justify font-light font-serif"
-                                  >
-                                    {comparisonParagraphs.map((sentence, index) => (
-                                      <p key={`${comparisonKey}-${index}`} className="mb-4 last:mb-0">
-                                        {sentence}。
-                                      </p>
-                                    ))}
-                                  </motion.div>
-                                </AnimatePresence>
-                              </ScrollArea>
-                            </CardContent>
-                            
-                            <div className="mt-6 p-4 bg-slate-950 rounded-lg border border-slate-800/50 shrink-0 relative z-10">
-                                <p className="text-[10px] text-slate-500 uppercase tracking-wide mb-2 font-bold flex items-center gap-2">
-                                    <Brain size={12} /> 核心洞察
-                                </p>
-                                <p className="text-xs text-slate-400 italic">
-                                    "技术红利的分配存在时间滞后效应。我们今天面临的风险，不是技术本身，而是我们是否准备好度过这 30-40 年的制度调整期。"
-                                </p>
+                        {ERAS.slice(0, -1).map((rowEra, rowIndex) => (
+                          <React.Fragment key={`row-${rowEra.id}`}>
+                            <div className="h-24 rounded-md border border-slate-800/70 bg-slate-950/40 px-3 py-2 flex items-center">
+                              <p className="text-xs font-semibold text-slate-200 leading-snug">{rowEra.name}</p>
                             </div>
-                        </Card>
-                    </div>
 
-                    <div className="flex-1 min-w-0 h-[400px] lg:h-auto">
-                        <EraCard era={era2} setEra={setEra2} label="卡片 B" />
-                    </div>
-                </div>
+                            {ERAS.slice(1).map((columnEra, visibleColumnIndex) => {
+                              const originalColumnIndex = visibleColumnIndex + 1;
+                              if (rowEra.id === columnEra.id) {
+                                return (
+                                  <div
+                                    key={`${rowEra.id}-${columnEra.id}`}
+                                    className="h-24 rounded-md border border-slate-800/70 bg-slate-950/30 px-3 py-2 flex items-center justify-center"
+                                  >
+                                    <span className="text-[11px] uppercase tracking-widest text-slate-600">同时代</span>
+                                  </div>
+                                );
+                              }
+
+                              if (rowIndex > originalColumnIndex) {
+                                return (
+                                  <div
+                                    key={`${rowEra.id}-${columnEra.id}`}
+                                    className="h-24 rounded-md border border-dashed border-slate-800/60 bg-slate-950/20 px-3 py-2 flex items-center justify-center"
+                                  >
+                                    <span className="text-[11px] uppercase tracking-widest text-slate-700">镜像省略</span>
+                                  </div>
+                                );
+                              }
+
+                              const pairKey = buildComparisonPairKeyByEraId(rowEra.id, columnEra.id);
+                              const pairOption = pairOptionByKey[pairKey];
+                              const isActivePair = pairKey === activeComparisonKey;
+
+                              return (
+                                <button
+                                  key={`${rowEra.id}-${columnEra.id}`}
+                                  type="button"
+                                  onClick={() => handleSelectPair(rowEra.id, columnEra.id)}
+                                  className={
+                                    'h-24 rounded-md border px-3 py-2 text-left transition-colors ' +
+                                    (isActivePair
+                                      ? 'border-cyan-400/70 bg-cyan-500/15'
+                                      : 'border-slate-800/70 bg-slate-950/40 hover:border-slate-600/80 hover:bg-slate-900/80')
+                                  }
+                                >
+                                  <p className="text-[10px] uppercase tracking-widest text-slate-500 mb-1">{pairOption?.label ?? pairKey}</p>
+                                  <p className="text-xs text-slate-200 leading-snug line-clamp-2">
+                                    {pairOption?.focus ?? '跨时代结构对照'}
+                                  </p>
+                                </button>
+                              );
+                            })}
+                          </React.Fragment>
+                        ))}
+                      </div>
+                    </ScrollArea>
+
+                    {activePair ? (
+                      <p className="mt-3 text-xs text-slate-500">
+                        当前矩阵焦点：{activePair.label} · {activePair.focus}
+                      </p>
+                    ) : null}
+                  </CardContent>
+                </Card>
+
+                {/* The New Comparison Engine */}
+                <TemporalEchoEngine 
+                  eraA={era1} 
+                  eraB={era2} 
+                />
 
                 {/* Macro Paradox Card (Only for IR2 vs AI) */}
                 {isFordVsAI && (
