@@ -6,7 +6,7 @@ import {
   type EdgeProps,
 } from '@xyflow/react';
 import { cn } from '@/lib/utils';
-import type { SemanticEdgeData } from '@/lib/flow/adapters';
+import type { SemanticEdgeData, TrapFlowEdge } from '@/lib/flow/adapters';
 
 interface EdgeVisualStyle {
   stroke: string;
@@ -40,7 +40,7 @@ const EDGE_STYLE_BY_TYPE: Record<SemanticEdgeData['pathType'], EdgeVisualStyle> 
   },
 };
 
-const SemanticEdge: React.FC<EdgeProps<SemanticEdgeData>> = (props) => {
+const SemanticEdge: React.FC<EdgeProps<TrapFlowEdge>> = (props) => {
   const {
     id,
     sourceX,

@@ -12,7 +12,7 @@ import {
   Zap,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import type { TrapFlowNodeData } from '@/lib/flow/adapters';
+import type { TrapFlowNode } from '@/lib/flow/adapters';
 
 interface NodeVisualStyle {
   borderClass: string;
@@ -21,7 +21,9 @@ interface NodeVisualStyle {
   backgroundClass: string;
 }
 
-const NODE_STYLE_BY_TYPE: Record<TrapFlowNodeData['trapNode']['type'], NodeVisualStyle> = {
+type TrapNodeType = TrapFlowNode['data']['trapNode']['type'];
+
+const NODE_STYLE_BY_TYPE: Record<TrapNodeType, NodeVisualStyle> = {
   concept: {
     borderClass: 'border-cyan-300/80',
     glowClass: 'shadow-[0_0_34px_rgba(34,211,238,0.42)]',
@@ -54,7 +56,7 @@ const NODE_STYLE_BY_TYPE: Record<TrapFlowNodeData['trapNode']['type'], NodeVisua
   },
 };
 
-function getNodeIcon(nodeId: string, nodeType: TrapFlowNodeData['trapNode']['type']): React.ReactNode {
+function getNodeIcon(nodeId: string, nodeType: TrapNodeType): React.ReactNode {
   if (nodeId === 'ford_paradox') return <Ban size={18} />;
   if (nodeId === 'resistance') return <Hammer size={18} />;
   if (nodeId === 'institution_gap') return <Hourglass size={18} />;
@@ -67,7 +69,7 @@ function getNodeIcon(nodeId: string, nodeType: TrapFlowNodeData['trapNode']['typ
   return <Info size={18} />;
 }
 
-const TrapNode: React.FC<NodeProps<TrapFlowNodeData>> = ({ data, selected }) => {
+const TrapNode: React.FC<NodeProps<TrapFlowNode>> = ({ data, selected }) => {
   const { trapNode, isRelated, isStoryHighlighted } = data;
   const style = NODE_STYLE_BY_TYPE[trapNode.type];
   const nodeIcon = getNodeIcon(trapNode.id, trapNode.type);

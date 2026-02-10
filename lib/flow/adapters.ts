@@ -1,22 +1,25 @@
-import type { Edge, Node } from '@xyflow/react';
+import { Position, type Edge, type Node } from '@xyflow/react';
 import { TRAP_LOGIC_MAP } from '@/constants';
 import type { Link, Node as TrapNode } from '@/types';
 import { getSemanticPathType } from '@/lib/flow/semantics';
 
-export interface TrapFlowNodeData {
+export interface TrapFlowNodeData extends Record<string, unknown> {
   trapNode: TrapNode;
   isSelected: boolean;
   isRelated: boolean;
   isStoryHighlighted: boolean;
 }
 
-export interface SemanticEdgeData {
+export interface SemanticEdgeData extends Record<string, unknown> {
   label?: string;
   pathType: 'default' | 'prosperity' | 'trap' | 'feedback';
   isConnected: boolean;
   isHighlighted: boolean;
   storyMode: boolean;
 }
+
+export type TrapFlowNode = Node<TrapFlowNodeData, 'trapNode'>;
+export type TrapFlowEdge = Edge<SemanticEdgeData, 'semantic'>;
 
 interface CreateFlowNodesOptions {
   selectedNodeId: string | null;
@@ -71,12 +74,12 @@ function resolveDirectionalHandles(source: TrapNode, target: TrapNode): NodeHand
   };
 }
 
-export function createFlowNodes(options: CreateFlowNodesOptions): Node<TrapFlowNodeData>[] {
+export function createFlowNodes(options: CreateFlowNodesOptions): TrapFlowNode[] {
   const { selectedNodeId, relatedNodeIds, storyMode, highlightedNodeIds } = options;
 
   return TRAP_LOGIC_MAP.nodes.map((node) => ({
     id: node.id,
-    type: 'trapNode',
+    type: 'trapNode' as const,
     position: {
       x: node.x - NODE_WIDTH / 2,
       y: node.y + Y_OFFSET - NODE_HEIGHT / 2,
@@ -89,8 +92,8 @@ export function createFlowNodes(options: CreateFlowNodesOptions): Node<TrapFlowN
       isRelated: storyMode ? highlightedNodeIds.has(node.id) : relatedNodeIds.has(node.id),
       isStoryHighlighted: highlightedNodeIds.has(node.id),
     },
-    sourcePosition: 'bottom',
-    targetPosition: 'top',
+    sourcePosition: Position.Bottom,
+    targetPosition: Position.Top,
   }));
 }
 
@@ -98,17 +101,16 @@ function createEdgeId(link: Link): string {
   return `${link.source}->${link.target}`;
 }
 
-export function createFlowEdges(options: CreateFlowEdgesOptions): Edge<SemanticEdgeData>[] {
+export function createFlowEdges(options: CreateFlowEdgesOptions): TrapFlowEdge[] {
   const { activeNodeId, storyMode, highlightedEdgeKeys } = options;
   const nodesById = new Map(TRAP_LOGIC_MAP.nodes.map((node) => [node.id, node]));
 
-  return TRAP_LOGIC_MAP.links
-    .map((link) => {
+  return TRAP_LOGIC_MAP.links.flatMap((link) => {
       const source = nodesById.get(link.source);
       const target = nodesById.get(link.target);
 
       if (!source || !target) {
-        return null;
+        return [];
       }
 
       const edgeKey = createEdgeId(link);
@@ -119,7 +121,7 @@ export function createFlowEdges(options: CreateFlowEdgesOptions): Edge<SemanticE
       const pathType = getSemanticPathType(source, target);
       const directionalHandles = resolveDirectionalHandles(source, target);
 
-      return {
+      const edge: TrapFlowEdge = {
         id: edgeKey,
         type: 'semantic',
         source: link.source,
@@ -135,7 +137,8 @@ export function createFlowEdges(options: CreateFlowEdgesOptions): Edge<SemanticE
           isHighlighted,
           storyMode,
         },
-      } satisfies Edge<SemanticEdgeData>;
-    })
-    .filter((edge): edge is Edge<SemanticEdgeData> => Boolean(edge));
+      };
+
+      return [edge];
+    });
 }

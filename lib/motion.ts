@@ -18,14 +18,14 @@ export const MECHANISM_MOTION = {
 
 export function createMotionTransition(
   shouldReduceMotion: boolean,
-  duration = MECHANISM_MOTION.enterDuration,
+  duration: number = MECHANISM_MOTION.enterDuration,
 ): Transition {
   return shouldReduceMotion ? { duration: 0 } : { duration, ease: 'easeOut' };
 }
 
 export function createFadeInMotion(
   shouldReduceMotion: boolean,
-  duration = 0.25,
+  duration: number = 0.25,
 ): FadeInMotionConfig {
   return {
     initial: shouldReduceMotion ? false : { opacity: 0 },
@@ -36,8 +36,8 @@ export function createFadeInMotion(
 
 export function createFadeSlideMotion(
   shouldReduceMotion: boolean,
-  distance = 8,
-  duration = 0.2,
+  distance: number = 8,
+  duration: number = 0.2,
 ): FadeSlideMotionConfig {
   return {
     initial: shouldReduceMotion ? false : { opacity: 0, y: distance },

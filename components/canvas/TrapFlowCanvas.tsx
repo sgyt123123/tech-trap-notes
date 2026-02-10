@@ -13,7 +13,12 @@ import {
 import '@xyflow/react/dist/style.css';
 import TrapNode from '@/components/canvas/nodes/TrapNode';
 import SemanticEdge from '@/components/canvas/edges/SemanticEdge';
-import { createFlowEdges, createFlowNodes } from '@/lib/flow/adapters';
+import {
+  createFlowEdges,
+  createFlowNodes,
+  type TrapFlowEdge,
+  type TrapFlowNode,
+} from '@/lib/flow/adapters';
 import {
   createRelatedNodeIds,
   createStoryHighlight,
@@ -81,19 +86,19 @@ const TrapFlowCanvas: React.FC<TrapFlowCanvasProps> = ({ className }) => {
     [activeNodeId, story.mode, storyHighlight.highlightedEdgeKeys],
   );
 
-  const handleNodeClick: NodeMouseHandler = (_, node) => {
+  const handleNodeClick: NodeMouseHandler<TrapFlowNode> = (_, node) => {
     selectNode(node.id, 'canvas');
   };
 
-  const handleNodeMouseEnter: NodeMouseHandler = (_, node) => {
+  const handleNodeMouseEnter: NodeMouseHandler<TrapFlowNode> = (_, node) => {
     setHoveredNode(node.id);
   };
 
-  const handleNodeMouseLeave: NodeMouseHandler = () => {
+  const handleNodeMouseLeave: NodeMouseHandler<TrapFlowNode> = () => {
     setHoveredNode(null);
   };
 
-  const handleNodeDragStart: OnNodeDrag = () => {
+  const handleNodeDragStart: OnNodeDrag<TrapFlowNode> = () => {
     setHoveredNode(null);
   };
 
@@ -108,7 +113,7 @@ const TrapFlowCanvas: React.FC<TrapFlowCanvasProps> = ({ className }) => {
         className,
       )}
     >
-      <ReactFlow
+      <ReactFlow<TrapFlowNode, TrapFlowEdge>
         nodes={nodes}
         edges={edges}
         nodeTypes={nodeTypes}

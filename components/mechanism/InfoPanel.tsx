@@ -83,7 +83,7 @@ const InfoPanel: React.FC<InfoPanelProps> = ({ selectedNode, onNavigate }) => {
   );
   const [activeTab, setActiveTab] = React.useState<SectionKey>('visual');
   const scrollAreaId = React.useId();
-  const sectionRefs = React.useRef<Record<SectionKey, HTMLDivElement | null>>({
+  const sectionRefs = React.useRef<Record<SectionKey, HTMLElement | null>>({
     visual: null,
     analysis: null,
     links: null,
@@ -92,7 +92,7 @@ const InfoPanel: React.FC<InfoPanelProps> = ({ selectedNode, onNavigate }) => {
   React.useEffect(() => {
     setActiveTab('visual');
     const rootElement = document.getElementById(scrollAreaId);
-    const viewportElement = rootElement?.querySelector('[data-slot="scroll-area-viewport"]') as HTMLDivElement | null;
+    const viewportElement = rootElement?.querySelector('[data-slot="scroll-area-viewport"]') as HTMLElement | null;
 
     if (viewportElement) {
       viewportElement.scrollTo({ top: 0, behavior: 'auto' });
@@ -101,7 +101,7 @@ const InfoPanel: React.FC<InfoPanelProps> = ({ selectedNode, onNavigate }) => {
 
   React.useEffect(() => {
     const rootElement = document.getElementById(scrollAreaId);
-    const viewportElement = rootElement?.querySelector('[data-slot="scroll-area-viewport"]') as HTMLDivElement | null;
+    const viewportElement = rootElement?.querySelector('[data-slot="scroll-area-viewport"]') as HTMLElement | null;
     if (!viewportElement) {
       return;
     }
@@ -127,8 +127,8 @@ const InfoPanel: React.FC<InfoPanelProps> = ({ selectedNode, onNavigate }) => {
     );
 
     const currentRefs = sectionRefs.current;
-    const targets: HTMLDivElement[] = [currentRefs.visual, currentRefs.analysis, currentRefs.links].filter(
-      (item): item is HTMLDivElement => Boolean(item),
+    const targets: HTMLElement[] = [currentRefs.visual, currentRefs.analysis, currentRefs.links].filter(
+      (item): item is HTMLElement => Boolean(item),
     );
     targets.forEach((target) => observer.observe(target));
 
