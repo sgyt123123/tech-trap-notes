@@ -33,7 +33,7 @@ const FordParadoxVisual: React.FC = () => (
              {/* Right Label: Vertical Layout - Positioned in safety margin (x=310) */}
              <foreignObject x="304" y="174" width="52" height="152">
                 <div className="h-full flex items-center justify-center">
-                    <span className="text-[11px] font-bold text-slate-200 bg-slate-950/90 py-3 px-1.5 rounded border border-slate-600/80 shadow-lg" style={{ writingMode: 'vertical-rl', textOrientation: 'upright', letterSpacing: '3px' }}>
+                    <span className="text-xs font-bold text-slate-200 bg-slate-950/90 py-3 px-1.5 rounded border border-slate-600/80 shadow-lg" style={{ writingMode: 'vertical-rl', textOrientation: 'upright', letterSpacing: '3px' }}>
                         消费回流断裂
                     </span>
                 </div>
@@ -42,11 +42,11 @@ const FordParadoxVisual: React.FC = () => (
              {/* Left Arc (Wages - The Blocked Artery) */}
              {/* Control point constrained to 20 to leave 20px safety margin on left */}
              <path d="M180,90 Q20,250 180,410" fill="none" stroke="#7f1d1d" strokeWidth="6" className="opacity-50" />
-             <path d="M180,90 Q20,250 180,410" fill="none" stroke="#ef4444" strokeWidth="2" strokeDasharray="8 12" className="animate-[flow_3s_linear_infinite]" />
+             <path d="M180,90 Q20,250 180,410" fill="none" stroke="#ef4444" strokeWidth="2" strokeDasharray="8 12" className="animate-[flow_5s_linear_infinite]" />
              
              {/* Left Label - Horizontal - Positioned safely (x=10) */}
              <foreignObject x="6" y="106" width="132" height="44">
-                <div className="text-[11px] font-bold text-red-300 bg-slate-950/90 px-2 py-1.5 rounded border border-red-800/50 shadow-xl text-center backdrop-blur-sm">
+                <div className="text-xs font-bold text-red-300 bg-slate-950/90 px-2 py-1.5 rounded border border-red-800/50 shadow-xl text-center backdrop-blur-sm">
                     工资分配
                 </div>
              </foreignObject>
@@ -56,10 +56,10 @@ const FordParadoxVisual: React.FC = () => (
                  <div className="flex flex-col items-center">
                      <div className="w-14 h-14 bg-slate-900 rounded-2xl border-2 border-cyan-500 flex items-center justify-center text-cyan-400 shadow-[0_0_30px_rgba(6,182,212,0.3)] z-10 relative">
                          <Factory size={28} />
-                         <div className="absolute -top-1 -right-1 w-3 h-3 bg-cyan-400 rounded-full animate-ping"></div>
+                         <div className="absolute -top-1 -right-1 w-3 h-3 bg-cyan-400 rounded-full"></div>
                      </div>
                      <span className="text-sm font-black text-white mt-2 bg-slate-950 px-3 py-0.5 rounded border border-slate-800 whitespace-nowrap">生产/资本中枢</span>
-                     <span className="text-[11px] text-cyan-300 font-mono mt-0.5 font-bold">产出爆炸</span>
+                     <span className="text-xs text-cyan-300 font-mono mt-0.5 font-bold">产出爆炸</span>
                  </div>
              </foreignObject>
 
@@ -70,7 +70,7 @@ const FordParadoxVisual: React.FC = () => (
                          <Users size={28} />
                      </div>
                      <span className="text-sm font-black text-slate-100 mt-2 bg-slate-950 px-3 py-0.5 rounded border border-slate-700 whitespace-nowrap">大众/消费者</span>
-                     <span className="text-[11px] text-red-300 font-mono mt-0.5 font-bold">购买力枯竭</span>
+                     <span className="text-xs text-red-300 font-mono mt-0.5 font-bold">购买力枯竭</span>
                  </div>
              </foreignObject>
 
@@ -78,12 +78,12 @@ const FordParadoxVisual: React.FC = () => (
              <foreignObject x="-4" y="224" width="170" height="128">
                  <div className="flex flex-col items-center justify-center w-full h-full z-20 group">
                      {/* Icon */}
-                     <div className="bg-red-950 text-red-500 rounded-full p-2.5 border-2 border-red-500 mb-2 shadow-[0_0_20px_rgba(239,68,68,0.6)] animate-pulse relative z-10">
+                     <div className="bg-red-950 text-red-500 rounded-full p-2.5 border-2 border-red-500 mb-2 shadow-[0_0_20px_rgba(239,68,68,0.6)] relative z-10">
                         <Activity size={24} />
                      </div>
                      {/* Label Box */}
                      <div className="bg-slate-950 border border-red-400 rounded px-2 py-1.5 text-center shadow-2xl relative z-30 min-w-[100px]">
-                        <span className="block text-[11px] text-red-300 font-black leading-tight whitespace-nowrap">
+                        <span className="block text-xs text-red-300 font-black leading-tight whitespace-nowrap">
                             制度性血栓
                         </span>
                      </div>
@@ -96,7 +96,7 @@ const FordParadoxVisual: React.FC = () => (
                     <div className="flex flex-col items-center bg-slate-950 border-2 border-slate-700 px-4 py-3 rounded-xl shadow-2xl z-10 relative">
                         {/* Glow effect */}
                         <div className="absolute inset-0 bg-slate-800/50 blur-xl rounded-full -z-10"></div>
-                        <span className="text-[11px] text-slate-300 font-mono mb-2 tracking-[0.2em] border-b border-slate-700 pb-1">福特悖论</span>
+                        <span className="text-xs text-slate-300 font-mono mb-2 tracking-[0.2em] border-b border-slate-700 pb-1">福特悖论</span>
                         <div className="text-sm text-white font-black text-center leading-snug">
                             消灭生产者 <span className="text-red-500 mx-1">=</span><br/>消灭消费者
                         </div>

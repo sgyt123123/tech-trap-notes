@@ -29,9 +29,9 @@ const ProsperityVisual: React.FC = () => (
           x2="274"
           y2="130"
           stroke="#334155"
-          strokeWidth="4"
+          strokeWidth="3"
           strokeDasharray="6 6"
-          className="animate-[flow_1s_linear_infinite]"
+          className="animate-[flow_3s_linear_infinite]"
         />
         <line
           x1="138"
@@ -39,7 +39,7 @@ const ProsperityVisual: React.FC = () => (
           x2="274"
           y2="78"
           stroke="#10b981"
-          strokeWidth="2.5"
+          strokeWidth="2.25"
           strokeOpacity="0.72"
           strokeDasharray="4 4"
           markerEnd="url(#prosperity-arrow)"
@@ -50,7 +50,7 @@ const ProsperityVisual: React.FC = () => (
           x2="274"
           y2="182"
           stroke="#a855f7"
-          strokeWidth="2.5"
+          strokeWidth="2.25"
           strokeOpacity="0.72"
           strokeDasharray="4 4"
           markerEnd="url(#distribution-arrow)"
@@ -63,7 +63,7 @@ const ProsperityVisual: React.FC = () => (
             stroke="#06b6d4"
             strokeWidth="6"
             strokeDasharray="7 5"
-            className="animate-[spin_4s_linear_infinite]"
+            className="animate-[spin_10s_linear_infinite]"
           />
           <circle r="32" fill="#082f49" opacity="0.55" />
           <foreignObject x="-13" y="-13" width="26" height="26">
@@ -80,7 +80,6 @@ const ProsperityVisual: React.FC = () => (
             stroke="#10b981"
             strokeWidth="4"
             strokeDasharray="6 4"
-            className="animate-[spin_4s_linear_infinite_reverse]"
           />
           <circle r="22" fill="#052e1f" opacity="0.55" />
           <foreignObject x="-11" y="-11" width="22" height="22">
@@ -97,7 +96,6 @@ const ProsperityVisual: React.FC = () => (
             stroke="#a855f7"
             strokeWidth="4"
             strokeDasharray="6 4"
-            className="animate-[spin_4s_linear_infinite_reverse]"
           />
           <circle r="22" fill="#3b0764" opacity="0.4" />
           <foreignObject x="-11" y="-11" width="22" height="22">
@@ -113,17 +111,17 @@ const ProsperityVisual: React.FC = () => (
         </g>
         <g>
           <rect x="266" y="38" rx="6" width="76" height="22" fill="#020617" stroke="#166534" />
-          <text x="304" y="53" textAnchor="middle" fontSize="10" fontWeight="700" fill="#6ee7b7">技能适配</text>
+          <text x="304" y="53" textAnchor="middle" fontSize="11" fontWeight="700" fill="#6ee7b7">技能适配</text>
         </g>
         <g>
           <rect x="266" y="197" rx="6" width="76" height="22" fill="#020617" stroke="#6b21a8" />
-          <text x="304" y="212" textAnchor="middle" fontSize="10" fontWeight="700" fill="#c084fc">利益分配</text>
+          <text x="304" y="212" textAnchor="middle" fontSize="11" fontWeight="700" fill="#c084fc">利益分配</text>
         </g>
       </svg>
     </div>
 
     <div className="mt-4 flex items-center gap-3 bg-emerald-950/25 border border-emerald-400/35 p-3 rounded-lg">
-      <div className="bg-emerald-500/20 p-1.5 rounded-full animate-pulse">
+      <div className="bg-emerald-500/20 p-1.5 rounded-full">
         <TrendingUp size={16} className="text-emerald-400" />
       </div>
       <div className="flex-1">

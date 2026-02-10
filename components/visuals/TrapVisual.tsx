@@ -24,24 +24,24 @@ const TrapVisual: React.FC = () => (
                 </defs>
 
                 <path d="M180,36 L300,206 L60,206 Z" fill="none" stroke="#78350f" strokeWidth="1" strokeDasharray="4 4" />
-                <path d="M180,36 L300,206 L60,206 Z" fill="none" stroke="#d97706" strokeWidth="2" strokeDasharray="8 8" className="animate-[flow_6s_linear_infinite]" />
+                <path d="M180,36 L300,206 L60,206 Z" fill="none" stroke="#d97706" strokeWidth="2" strokeDasharray="8 8" className="animate-[flow_9s_linear_infinite]" />
 
                 <g>
                     <rect x="118" y="6" width="124" height="54" rx="8" fill="#020617" stroke="#d97706" strokeOpacity="0.55" />
                     <text x="180" y="28" textAnchor="middle" fontSize="12" fontWeight="700" fill="#f59e0b">劳动力廉价</text>
-                    <text x="180" y="47" textAnchor="middle" fontSize="10" fill="#94a3b8">奴隶制 / 低工资</text>
+                    <text x="180" y="47" textAnchor="middle" fontSize="11" fill="#94a3b8">奴隶制 / 低工资</text>
                 </g>
 
                 <g>
                     <rect x="18" y="182" width="120" height="58" rx="8" fill="#020617" stroke="#d97706" strokeOpacity="0.55" />
                     <text x="78" y="204" textAnchor="middle" fontSize="12" fontWeight="700" fill="#f59e0b">产出停滞</text>
-                    <text x="78" y="223" textAnchor="middle" fontSize="10" fill="#94a3b8">维稳 &gt; 发展</text>
+                    <text x="78" y="223" textAnchor="middle" fontSize="11" fill="#94a3b8">维稳 &gt; 发展</text>
                 </g>
 
                 <g>
                     <rect x="222" y="182" width="120" height="58" rx="8" fill="#020617" stroke="#d97706" strokeOpacity="0.55" />
                     <text x="282" y="204" textAnchor="middle" fontSize="12" fontWeight="700" fill="#f59e0b">动力缺失</text>
-                    <text x="282" y="223" textAnchor="middle" fontSize="10" fill="#94a3b8">替代成本过高</text>
+                    <text x="282" y="223" textAnchor="middle" fontSize="11" fill="#94a3b8">替代成本过高</text>
                 </g>
 
                 <g opacity="0.5">
@@ -49,9 +49,9 @@ const TrapVisual: React.FC = () => (
                     <path d="M174,122 v-5 a6,6 0 0 1 12,0 v5" stroke="#d97706" fill="none" />
                 </g>
 
-                <text x="248" y="114" fill="#a16207" fontSize="10" fontWeight="700" transform="rotate(25, 248, 114)">无需机器</text>
-                <text x="180" y="214" fill="#a16207" fontSize="10" fontWeight="700" textAnchor="middle">无法增长</text>
-                <text x="112" y="114" fill="#a16207" fontSize="10" fontWeight="700" transform="rotate(-25, 112, 114)">巩固低薪</text>
+                <text x="248" y="114" fill="#a16207" fontSize="11" fontWeight="700" transform="rotate(25, 248, 114)">无需机器</text>
+                <text x="180" y="214" fill="#a16207" fontSize="11" fontWeight="700" textAnchor="middle">无法增长</text>
+                <text x="112" y="114" fill="#a16207" fontSize="11" fontWeight="700" transform="rotate(-25, 112, 114)">巩固低薪</text>
             </svg>
          </div>
       </div>

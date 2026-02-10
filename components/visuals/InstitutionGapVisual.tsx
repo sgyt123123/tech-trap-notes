@@ -10,7 +10,7 @@ const InstitutionGapVisual: React.FC = () => (
     <div className="relative flex flex-col gap-9 py-2 min-h-[210px] md:min-h-[240px] lg:min-h-[270px]">
         {/* Tech Row */}
         <div className="relative z-10">
-            <div className="flex justify-between text-[11px] text-cyan-300 mb-2 font-bold">
+            <div className="flex justify-between text-xs text-cyan-300 mb-2 font-bold">
                 <span className="flex items-center gap-1.5"><Zap size={13} /> 技术迭代</span>
                 <span className="font-mono opacity-70">指数级</span>
             </div>
@@ -32,7 +32,7 @@ const InstitutionGapVisual: React.FC = () => (
                      <div className="absolute right-0 w-1 h-1 bg-red-500 rounded-full translate-x-1/2"></div>
                      
                      {/* Label avoiding overlap */}
-                     <div className="bg-slate-950 px-3 py-1 rounded-full border border-red-400/40 text-red-300 text-[11px] font-bold shadow-sm z-10 flex items-center gap-1">
+                     <div className="bg-slate-950 px-3 py-1 rounded-full border border-red-400/40 text-red-300 text-xs font-bold shadow-sm z-10 flex items-center gap-1">
                         <AlertTriangle size={11} />
                         制度缺口：焦虑与动荡
                      </div>
@@ -42,7 +42,7 @@ const InstitutionGapVisual: React.FC = () => (
 
         {/* Institution Row */}
         <div className="relative z-10">
-            <div className="flex justify-between text-[11px] text-amber-300 mb-2 font-bold">
+            <div className="flex justify-between text-xs text-amber-300 mb-2 font-bold">
                 <span className="flex items-center gap-1.5"><Clock size={13} /> 制度演进</span>
                 <span className="font-mono opacity-70">线性</span>
             </div>

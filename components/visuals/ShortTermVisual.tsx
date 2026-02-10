@@ -39,7 +39,7 @@ const ShortTermVisual: React.FC = () => (
         </svg>
     </div>
     
-    <div className="mt-3 flex justify-between text-[11px] text-slate-200 font-mono border-t border-slate-700/60 pt-2">
+    <div className="mt-3 flex justify-between text-xs text-slate-200 font-mono border-t border-slate-700/60 pt-2">
         <span>起点</span>
         <span className="text-red-300">约40年滞后</span>
         <span>远期</span>
