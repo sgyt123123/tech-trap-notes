@@ -4,8 +4,8 @@ import { Ban, Factory, Users, Activity } from 'lucide-react';
 const FordParadoxVisual: React.FC = () => (
     <div className="bg-slate-900/70 rounded-xl p-4 lg:p-5 border border-slate-600/80 mb-4 w-full">
          <div className="flex items-center justify-between mb-6">
-             <h4 className="text-red-300 font-bold text-sm uppercase tracking-widest flex items-center gap-2">
-                <Ban size={16} /> The Broken Circuit (经济短路)
+             <h4 className="text-red-300 font-bold text-sm tracking-[0.16em] flex items-center gap-2">
+                <Ban size={16} /> 经济短路
              </h4>
          </div>
          
@@ -58,8 +58,8 @@ const FordParadoxVisual: React.FC = () => (
                          <Factory size={28} />
                          <div className="absolute -top-1 -right-1 w-3 h-3 bg-cyan-400 rounded-full animate-ping"></div>
                      </div>
-                     <span className="text-sm font-black text-white mt-2 bg-slate-950 px-3 py-0.5 rounded border border-slate-800 whitespace-nowrap">生产/资本 (AI)</span>
-                     <span className="text-[11px] text-cyan-300 font-mono mt-0.5 font-bold">产出爆炸 (High Output)</span>
+                     <span className="text-sm font-black text-white mt-2 bg-slate-950 px-3 py-0.5 rounded border border-slate-800 whitespace-nowrap">生产/资本中枢</span>
+                     <span className="text-[11px] text-cyan-300 font-mono mt-0.5 font-bold">产出爆炸</span>
                  </div>
              </foreignObject>
 
@@ -70,7 +70,7 @@ const FordParadoxVisual: React.FC = () => (
                          <Users size={28} />
                      </div>
                      <span className="text-sm font-black text-slate-100 mt-2 bg-slate-950 px-3 py-0.5 rounded border border-slate-700 whitespace-nowrap">大众/消费者</span>
-                     <span className="text-[11px] text-red-300 font-mono mt-0.5 font-bold">购买力枯竭 (No Money)</span>
+                     <span className="text-[11px] text-red-300 font-mono mt-0.5 font-bold">购买力枯竭</span>
                  </div>
              </foreignObject>
 
@@ -84,7 +84,7 @@ const FordParadoxVisual: React.FC = () => (
                      {/* Label Box */}
                      <div className="bg-slate-950 border border-red-400 rounded px-2 py-1.5 text-center shadow-2xl relative z-30 min-w-[100px]">
                         <span className="block text-[11px] text-red-300 font-black leading-tight whitespace-nowrap">
-                            制度性血栓<br/>(Blockage)
+                            制度性血栓
                         </span>
                      </div>
                  </div>
@@ -96,7 +96,7 @@ const FordParadoxVisual: React.FC = () => (
                     <div className="flex flex-col items-center bg-slate-950 border-2 border-slate-700 px-4 py-3 rounded-xl shadow-2xl z-10 relative">
                         {/* Glow effect */}
                         <div className="absolute inset-0 bg-slate-800/50 blur-xl rounded-full -z-10"></div>
-                        <span className="text-[11px] text-slate-300 font-mono mb-2 uppercase tracking-[0.2em] border-b border-slate-700 pb-1">The Paradox</span>
+                        <span className="text-[11px] text-slate-300 font-mono mb-2 tracking-[0.2em] border-b border-slate-700 pb-1">福特悖论</span>
                         <div className="text-sm text-white font-black text-center leading-snug">
                             消灭生产者 <span className="text-red-500 mx-1">=</span><br/>消灭消费者
                         </div>

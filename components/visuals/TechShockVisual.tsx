@@ -3,8 +3,8 @@ import { Zap, Scale, TrendingUp } from 'lucide-react';
 
 const TechShockVisual: React.FC = () => (
   <div className="bg-slate-900/70 rounded-xl border border-slate-600/80 mb-4 p-4 lg:p-5 relative overflow-visible group">
-    <div className="text-xs font-bold text-slate-200 uppercase tracking-widest mb-4 z-10 relative">
-      The Fork in the Road
+    <div className="text-xs font-bold text-slate-200 tracking-[0.16em] mb-4 z-10 relative">
+      技术分岔路径
     </div>
     
     <div className="w-full h-[250px] md:h-[280px] lg:h-[310px]">
@@ -38,7 +38,7 @@ const TechShockVisual: React.FC = () => (
             <foreignObject x="10" y="150" width="132" height="126">
                  <div className="bg-slate-950/85 border border-red-400/40 rounded-xl p-3 flex flex-col items-center text-center shadow-lg backdrop-blur-sm">
                      <div className="p-1.5 bg-red-500/10 rounded-lg mb-2 text-red-300"><Scale size={15} /></div>
-                     <h4 className="text-red-300 font-bold text-[11px] mb-1">替代型 (Replacing)</h4>
+                     <h4 className="text-red-300 font-bold text-[11px] mb-1">替代型</h4>
                      <div className="text-[10px] text-slate-200 leading-tight mb-2">机器取代人类</div>
                      
                      {/* Lower Progress Bar for Contrast */}
@@ -53,7 +53,7 @@ const TechShockVisual: React.FC = () => (
             <foreignObject x="178" y="150" width="132" height="126">
                  <div className="bg-slate-950/85 border border-emerald-400/40 rounded-xl p-3 flex flex-col items-center text-center shadow-lg backdrop-blur-sm">
                      <div className="p-1.5 bg-emerald-500/10 rounded-lg mb-2 text-emerald-300"><TrendingUp size={15} /></div>
-                     <h4 className="text-emerald-300 font-bold text-[11px] mb-1">赋能型 (Enabling)</h4>
+                     <h4 className="text-emerald-300 font-bold text-[11px] mb-1">赋能型</h4>
                      <div className="text-[10px] text-slate-200 leading-tight mb-2">机器辅助人类</div>
                      
                      {/* Higher Progress Bar for Contrast */}

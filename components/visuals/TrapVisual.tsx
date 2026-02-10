@@ -3,15 +3,15 @@ import { Repeat } from 'lucide-react';
 
 const TrapVisual: React.FC = () => (
     <div className="bg-slate-900/70 rounded-xl p-4 lg:p-5 border border-slate-600/80 mb-4 w-full overflow-visible">
-      <div className="flex justify-between items-center text-xs font-bold text-slate-200 uppercase tracking-widest mb-5">
-        <span>System Failure: The Stagnation Cycle</span>
+      <div className="flex justify-between items-center text-xs font-bold text-slate-200 tracking-[0.16em] mb-5">
+        <span>系统失灵：停滞循环</span>
       </div>
 
       {/* Ancient Trap: The Triangle of Stagnation */}
       <div className="relative">
          <div className="flex items-center justify-between mb-4 px-2">
             <h4 className="text-amber-300 font-bold text-base flex items-center gap-2">
-                <Repeat size={16} /> 罗马式停滞 (Stagnation Trap)
+                <Repeat size={16} /> 罗马式停滞
             </h4>
          </div>
          

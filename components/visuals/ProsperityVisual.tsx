@@ -3,8 +3,8 @@ import { Zap, GraduationCap, ShieldCheck, TrendingUp } from 'lucide-react';
 
 const ProsperityVisual: React.FC = () => (
   <div className="bg-slate-900/70 rounded-xl p-4 lg:p-5 border border-slate-600/80 mb-4 w-full overflow-visible">
-    <div className="flex justify-between items-center text-xs font-bold text-slate-200 uppercase tracking-widest mb-5">
-      <span>The Great Coupling (大融合)</span>
+    <div className="flex justify-between items-center text-xs font-bold text-slate-200 tracking-[0.16em] mb-5">
+      <span>协同共振</span>
     </div>
 
     <div className="w-full min-h-[250px] aspect-[19/12] max-h-[340px] lg:max-h-[370px] relative bg-emerald-950/10 rounded-xl border border-emerald-900/30 px-2 py-1">
@@ -127,10 +127,10 @@ const ProsperityVisual: React.FC = () => (
         <TrendingUp size={16} className="text-emerald-400" />
       </div>
       <div className="flex-1">
-        <div className="text-[11px] uppercase text-emerald-300/90 font-bold">System Output</div>
-        <div className="text-sm text-emerald-100 font-medium">工资与产出同步增长 (Shared Growth)</div>
+        <div className="text-[11px] text-emerald-300/90 font-bold">系统产出</div>
+        <div className="text-sm text-emerald-100 font-medium">工资与产出同步增长</div>
       </div>
-      <div className="text-xl font-black text-emerald-300">High</div>
+      <div className="text-xl font-black text-emerald-300">高协同</div>
     </div>
   </div>
 );

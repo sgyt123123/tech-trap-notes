@@ -2,8 +2,8 @@ import React from 'react';
 
 const ShortTermVisual: React.FC = () => (
   <div className="bg-slate-900/70 rounded-xl p-4 lg:p-5 border border-slate-600/80 mb-4 relative overflow-visible group">
-    <div className="flex justify-between items-center text-xs font-bold text-slate-200 uppercase tracking-widest mb-4 z-10 relative">
-      <span>The Decoupling (大分流)</span>
+    <div className="flex justify-between items-center text-xs font-bold text-slate-200 tracking-[0.16em] mb-4 z-10 relative">
+      <span>大分流</span>
     </div>
     
     <div className="h-[230px] md:h-[255px] lg:h-[285px] w-full relative mt-1 z-10">
@@ -40,9 +40,9 @@ const ShortTermVisual: React.FC = () => (
     </div>
     
     <div className="mt-3 flex justify-between text-[11px] text-slate-200 font-mono border-t border-slate-700/60 pt-2">
-        <span>Start</span>
-        <span className="text-red-300">~40 Years Lag</span>
-        <span>Future</span>
+        <span>起点</span>
+        <span className="text-red-300">约40年滞后</span>
+        <span>远期</span>
     </div>
   </div>
 );

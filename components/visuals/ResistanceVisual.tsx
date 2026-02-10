@@ -3,8 +3,8 @@ import { Hammer, Flame } from 'lucide-react';
 
 const ResistanceVisual: React.FC = () => (
     <div className="bg-slate-900/70 rounded-xl p-4 lg:p-5 border border-slate-600/80 mb-4 flex flex-col items-center relative overflow-visible group">
-      <div className="w-full flex justify-between items-center text-xs font-bold text-slate-200 uppercase tracking-widest mb-4 z-10">
-        <span>THE BREAKING POINT (阈值突破)</span>
+      <div className="w-full flex justify-between items-center text-xs font-bold text-slate-200 tracking-[0.16em] mb-4 z-10">
+        <span>阈值突破</span>
       </div>
       
       {/* SVG Visual Area */}
@@ -32,7 +32,7 @@ const ResistanceVisual: React.FC = () => (
                     </div>
                     <div className="bg-slate-950/90 border border-red-900/60 px-3 py-1 rounded text-center backdrop-blur-sm">
                         <div className="text-red-300 font-black text-[13px] uppercase tracking-wider leading-tight">卢德式反抗</div>
-                        <div className="text-[11px] text-red-300/80 font-mono leading-tight">Rational Riots</div>
+                        <div className="text-[11px] text-red-300/80 font-mono leading-tight">生存反抗</div>
                     </div>
                 </div>
              </foreignObject>
@@ -82,22 +82,22 @@ const ResistanceVisual: React.FC = () => (
       {/* Equation Panel */}
       <div className="w-full max-w-[95%] bg-slate-950/85 p-3 rounded-xl border border-slate-600/80 shadow-xl backdrop-blur-md flex flex-wrap items-center justify-center gap-3 relative z-20 mt-2">
              <div className="flex flex-col items-center">
-                 <span className="text-[10px] text-red-300 font-bold uppercase tracking-wider mb-0.5">PRESSURE</span>
-                 <span className="text-xl font-black text-red-500 leading-none">P</span>
+                 <span className="text-[10px] text-red-300 font-bold tracking-wider mb-0.5">压力</span>
+                 <span className="text-xl font-black text-red-500 leading-none">压</span>
              </div>
              
              <div className="text-slate-600 font-black text-xl animate-pulse">≫</div>
              
              <div className="flex flex-col items-center opacity-60">
-                 <span className="text-[10px] text-slate-300 font-bold uppercase tracking-wider mb-0.5">SUPPORT</span>
-                 <span className="text-xl font-black text-slate-200 leading-none">S</span>
+                 <span className="text-[10px] text-slate-300 font-bold tracking-wider mb-0.5">缓冲</span>
+                 <span className="text-xl font-black text-slate-200 leading-none">稳</span>
              </div>
              
              <div className="h-8 w-px bg-slate-800 mx-2 hidden sm:block"></div>
              
              <div className="bg-red-900/30 px-4 py-2 rounded-lg shadow-lg flex items-center gap-2 border border-red-500/30 group-hover:bg-red-900/50 transition-colors">
                  <Flame size={16} className="text-red-500 fill-red-500/50 animate-pulse" />
-                 <span className="text-base font-black text-white uppercase tracking-widest">REBELLION</span>
+                 <span className="text-base font-black text-white tracking-widest">冲突爆发</span>
              </div>
       </div>
       
