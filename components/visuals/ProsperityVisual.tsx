@@ -2,13 +2,13 @@ import React from 'react';
 import { Zap, GraduationCap, ShieldCheck, TrendingUp } from 'lucide-react';
 
 const ProsperityVisual: React.FC = () => (
-  <div className="bg-slate-900/70 rounded-xl p-4 lg:p-5 border border-slate-600/80 mb-4 w-full overflow-visible">
+  <div className="bg-slate-900/70 rounded-xl p-4 lg:p-5 border border-slate-600/80 mb-4 w-full min-w-0">
     <div className="flex justify-between items-center text-xs font-bold text-slate-200 tracking-[0.16em] mb-5">
       <span>协同共振</span>
     </div>
 
-    <div className="w-full min-h-[250px] aspect-[19/12] max-h-[340px] lg:max-h-[370px] relative bg-emerald-950/10 rounded-xl border border-emerald-900/30 px-2 py-1">
-      <svg className="w-full h-full overflow-visible" viewBox="0 0 420 260" preserveAspectRatio="xMidYMid meet">
+    <div className="w-full min-w-0 min-h-[200px] sm:min-h-[250px] aspect-[19/12] max-h-[340px] lg:max-h-[370px] relative bg-emerald-950/10 rounded-xl border border-emerald-900/30 px-2 py-1 overflow-hidden">
+      <svg className="w-full h-full" viewBox="0 0 420 260" preserveAspectRatio="xMidYMid meet">
         <defs>
           <pattern id="prosperity-grid" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
             <path d="M20 0H0V20" fill="none" stroke="#94a3b8" strokeWidth="0.5" opacity="0.2" />
@@ -64,6 +64,7 @@ const ProsperityVisual: React.FC = () => (
             strokeWidth="6"
             strokeDasharray="7 5"
             className="animate-[spin_10s_linear_infinite]"
+            style={{ transformBox: 'fill-box', transformOrigin: 'center' }}
           />
           <circle r="32" fill="#082f49" opacity="0.55" />
           <foreignObject x="-13" y="-13" width="26" height="26">
@@ -120,15 +121,15 @@ const ProsperityVisual: React.FC = () => (
       </svg>
     </div>
 
-    <div className="mt-4 flex items-center gap-3 bg-emerald-950/25 border border-emerald-400/35 p-3 rounded-lg">
-      <div className="bg-emerald-500/20 p-1.5 rounded-full">
+    <div className="mt-4 flex flex-wrap items-center gap-2 sm:gap-3 bg-emerald-950/25 border border-emerald-400/35 p-3 rounded-lg">
+      <div className="bg-emerald-500/20 p-1.5 rounded-full shrink-0">
         <TrendingUp size={16} className="text-emerald-400" />
       </div>
-      <div className="flex-1">
+      <div className="min-w-0 flex-1">
         <div className="text-[11px] text-emerald-300/90 font-bold">系统产出</div>
         <div className="text-sm text-emerald-100 font-medium">工资与产出同步增长</div>
       </div>
-      <div className="text-xl font-black text-emerald-300">高协同</div>
+      <div className="text-base sm:text-xl font-black text-emerald-300 shrink-0">高协同</div>
     </div>
   </div>
 );
